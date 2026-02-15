@@ -1,0 +1,12 @@
+pattern: ec2_instance_retirement
+failure_class: operational_failure
+conditions:
+  - hardware_degradation
+  - unexpected_reboot
+  - lack_of_resiliency
+description: AWS retires underlying hardware due to failure, causing forced instance stop/start. If not handled, this leads to downtime.
+mitigations:
+  - auto_scaling_group
+  - spot_fleet_interruption_handler
+  - chaos_monkey
+  - predictive_scaling

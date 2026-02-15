@@ -1,0 +1,10 @@
+pattern: s3_object_lock_retention_error
+failure_class: compliance_failure
+conditions:
+- governance_mode_bypass
+- incorrect_retention_period
+description: Unable to delete or modify objects due to active Object Lock beyond expected
+  duration.
+mitigations:
+- s3_batch_operations
+- compliance_mode_review

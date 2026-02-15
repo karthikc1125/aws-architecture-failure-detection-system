@@ -1,0 +1,9 @@
+pattern: ecs_task_health_check_fail
+failure_class: availability_failure
+conditions:
+- container_health_check
+- grace_period
+description: Tasks are killed immediately after starting.
+mitigations:
+- health_check_grace_period
+- container_logs_debug

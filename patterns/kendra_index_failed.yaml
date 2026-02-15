@@ -1,0 +1,9 @@
+pattern: kendra_index_failed
+failure_class: search_failure
+conditions:
+- storage_limit
+- access_role
+description: Document indexing stops.
+mitigations:
+- capacity_edition_upgrade
+- role_policy_check

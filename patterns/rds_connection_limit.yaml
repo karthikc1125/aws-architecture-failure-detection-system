@@ -1,0 +1,14 @@
+pattern: rds_connection_limit
+failure_class: resource_exhaustion
+conditions:
+  - lambda_burst_scaling
+  - lack_of_connection_pooling
+  - microservice_fanout
+  - synchronous_db_calls
+description: Serverless functions scale faster than the database can accept new connections, hitting MaxConnections and rejecting clients.
+mitigations:
+  - rds_proxy
+  - connection_pooling
+  - dynamodb_migration
+  - increase_db_instance_size
+  - serverless_v2

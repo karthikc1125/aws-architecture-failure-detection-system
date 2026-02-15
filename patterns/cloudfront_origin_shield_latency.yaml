@@ -1,0 +1,13 @@
+pattern: cloudfront_origin_shield_latency
+failure_class: performance_degradation
+conditions:
+  - origin_shield_enabled
+  - wrong_region_selection
+  - increased_latency
+  - global_user_base
+description: Enabling Origin Shield in a region distant from the majority of users increases latency for cache misses.
+mitigations:
+  - origin_shield_region_optimization
+  - disable_origin_shield
+  - multi_region_origin_group
+  - latency_routing_policy

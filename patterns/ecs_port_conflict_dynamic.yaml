@@ -1,0 +1,13 @@
+pattern: ecs_port_conflict_dynamic
+failure_class: resource_allocation_failure
+conditions:
+  - ec2_launch_type
+  - bridge_networking
+  - static_host_port
+  - multiple_tasks_per_instance
+description: Tasks fail to place on EC2 instances because they statically bind to the same host port (e.g., 8080).
+mitigations:
+  - dynamic_port_mapping
+  - alb_dynamic_routing
+  - awsvpc_network_mode
+  - fargate_launch_type

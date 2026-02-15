@@ -1,0 +1,13 @@
+pattern: transit_gateway_multicast_bandwidth
+failure_class: performance_degradation
+conditions:
+  - multicast_enabled
+  - high_bandwidth_stream
+  - packet_loss
+  - group_member_saturation
+description: Multicast traffic overwhelms the TGW processing capacity or exceeds per-attachment bandwidth limits.
+mitigations:
+  - igmp_v3_support
+  - bandwidth_allocation
+  - reducing_group_size
+  - dedicated_multicast_domain

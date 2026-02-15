@@ -1,0 +1,9 @@
+pattern: greengrass_deployment_fail
+failure_class: edge_computing_error
+conditions:
+- component_dependency
+- lambda_version
+description: Deployment to core device fails.
+mitigations:
+- deployment_logs
+- component_version_check

@@ -1,0 +1,13 @@
+pattern: lambda_cold_start
+failure_class: performance_latency
+conditions:
+  - vpc_association
+  - large_deployment_package
+  - java_runtime
+  - infrequent_invocation
+description: High latency on initial invocation due to environment setup (ENI creation, JAR download).
+mitigations:
+  - provisioned_concurrency
+  - lightweight_runtime
+  - keep_warm_ping
+  - optimize_dependencies

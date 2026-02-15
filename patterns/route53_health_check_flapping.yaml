@@ -1,0 +1,9 @@
+pattern: route53_health_check_flapping
+failure_class: availability_instability
+conditions:
+- sensitive_threshold
+- network_jitter
+description: Health check marks endpoint unhealthy/healthy repeatedly.
+mitigations:
+- health_check_tuning
+- latency_measurement

@@ -1,0 +1,9 @@
+pattern: polly_text_length_exceeded
+failure_class: ai_service_error
+conditions:
+- character_limit
+- ssml_error
+description: Speech synthesis fails.
+mitigations:
+- split_text
+- long_audio_synthesis

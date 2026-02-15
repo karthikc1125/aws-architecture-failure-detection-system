@@ -1,0 +1,12 @@
+pattern: s3_access_denied
+failure_class: security_failure
+conditions:
+- missing_policy
+- kms_mismatch
+- bucket_policy_restriction
+description: Application receives 403 Forbidden due to policy mismatch or missing
+  KMS key permission.
+mitigations:
+- iam_access_analyzer
+- s3_bucket_policy
+- kms_key_policy

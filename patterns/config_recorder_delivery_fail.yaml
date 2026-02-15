@@ -1,0 +1,9 @@
+pattern: config_recorder_delivery_fail
+failure_class: compliance_failure
+conditions:
+- s3_permission
+- sns_topic_error
+description: Configuration changes not being recorded.
+mitigations:
+- role_policy_fix
+- delivery_channel_check

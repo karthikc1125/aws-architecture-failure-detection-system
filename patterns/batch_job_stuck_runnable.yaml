@@ -1,0 +1,9 @@
+pattern: batch_job_stuck_runnable
+failure_class: resource_exhaustion
+conditions:
+- v_cpu_limit
+- compute_environment_invalid
+description: AWS Batch jobs remain in RUNNABLE state indefinitely.
+mitigations:
+- compute_environment_troubleshooting
+- job_queue_priority

@@ -1,0 +1,14 @@
+pattern: lambda_timeout
+failure_class: limited_capacity
+conditions:
+  - long_running_processing
+  - synchronous_dependency_failure
+  - network_latency
+  - cold_start
+description: Function execution exceeds configured timeout (max 15 min), causing failure and retry storms in caller services.
+mitigations:
+  - step_functions
+  - dead_letter_queue
+  - async_processing
+  - provisioned_concurrency
+  - memory_tuning

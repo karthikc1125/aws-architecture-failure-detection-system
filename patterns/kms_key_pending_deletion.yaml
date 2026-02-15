@@ -1,0 +1,9 @@
+pattern: kms_key_pending_deletion
+failure_class: data_access_failure
+conditions:
+- accidental_deletion
+- missing_cancellation
+description: Encrypted data is inaccessible because key is scheduled for deletion.
+mitigations:
+- cancel_key_deletion
+- multi_region_key

@@ -1,0 +1,10 @@
+pattern: ebs_io_latency_spike
+failure_class: performance_degradation
+conditions:
+- noisy_neighbor
+- instance_throughput_limit
+description: Unexpected latency due to underlying hardware contention or instance
+  limit.
+mitigations:
+- io2_block_express
+- dedicated_instance

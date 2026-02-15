@@ -1,0 +1,13 @@
+pattern: route53_zone_apex_alias_mismatch
+failure_class: dns_resolution_failure
+conditions:
+  - cname_at_apex
+  - alias_target_invalid
+  - zone_apex_record
+  - invalid_change_batch
+description: Attempts to create a CNAME record at the zone apex (root domain) fail; Alias records must be used for root domains.
+mitigations:
+  - alias_record_type
+  - cloudfront_alias
+  - s3_website_endpoint_alias
+  - alb_alias

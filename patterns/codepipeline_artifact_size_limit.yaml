@@ -1,0 +1,13 @@
+pattern: codepipeline_artifact_size_limit
+failure_class: build_failure
+conditions:
+  - large_build_artifact
+  - s3_upload_failure
+  - 256mb_input_limit
+  - pipeline_halt
+description: CodePipeline fails to pass artifacts between stages if the zipped artifact exceeds default S3 or build size limits.
+mitigations:
+  - s3_multipart_upload
+  - artifact_compression
+  - separate_artifact_store
+  - docker_layer_caching

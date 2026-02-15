@@ -1,0 +1,13 @@
+pattern: step_functions_payload_size_limit
+failure_class: workflow_failure
+conditions:
+  - large_json_output
+  - 256kb_limit
+  - state_transition_failure
+  - data_passing
+description: Step Function execution fails when passing JSON data between states larger than 256KB.
+mitigations:
+  - s3_payload_offload
+  - message_pointer_pattern
+  - result_selector_filtering
+  - compression

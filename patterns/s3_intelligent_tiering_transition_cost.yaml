@@ -1,0 +1,13 @@
+pattern: s3_intelligent_tiering_transition_cost
+failure_class: cost_anomaly
+conditions:
+  - small_object_size
+  - frequent_access_pattern
+  - intelligent_tiering_enabled
+  - automatic_transition
+description: Objects smaller than 128KB in Intelligent Tiering incur per-object monitoring charges that exceed storage savings.
+mitigations:
+  - lifecycle_filter_size
+  - s3_storage_class_analysis
+  - standard_ia_transition
+  - batch_object_concatenation

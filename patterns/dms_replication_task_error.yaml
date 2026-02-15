@@ -1,0 +1,9 @@
+pattern: dms_replication_task_error
+failure_class: migration_failure
+conditions:
+- cdc_gap
+- source_latency
+description: Database migration task fails.
+mitigations:
+- task_log_debug
+- premigration_assessment

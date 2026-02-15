@@ -1,0 +1,13 @@
+pattern: apigateway_private_endpoint_access
+failure_class: connectivity_failure
+conditions:
+  - private_api_endpoint
+  - vpc_endpoint_policy
+  - dns_resolution_failure
+  - cross_account_access
+description: Private API Gateway endpoints are unreachable from other VPCs or accounts due to restrictive Resource Policies or DNS misconfiguration.
+mitigations:
+  - resource_policy_allow_vpc
+  - route53_private_hosted_zone
+  - vpc_peering_dns_support
+  - transit_gateway_routing

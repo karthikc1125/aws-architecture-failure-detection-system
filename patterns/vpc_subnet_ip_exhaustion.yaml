@@ -1,0 +1,9 @@
+pattern: vpc_subnet_ip_exhaustion
+failure_class: resource_exhaustion
+conditions:
+- small_cidr_block
+- high_pod_density
+description: No available IP addresses in subnet for new resources.
+mitigations:
+- new_subnet_association
+- secondary_cidr

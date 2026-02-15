@@ -1,0 +1,9 @@
+pattern: ecr_lifecycle_policy_deletion
+failure_class: data_loss
+conditions:
+- untagged_image_expire
+- aggressive_rule
+description: Important images deleted by lifecycle policy.
+mitigations:
+- policy_preview
+- immutable_tags

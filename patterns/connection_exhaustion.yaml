@@ -1,0 +1,13 @@
+pattern: connection_exhaustion
+failure_class: resource_exhaustion
+conditions:
+  - lambda_to_rds
+  - high_concurrency
+  - max_connections_limit
+  - no_connection_pooling
+description: Serverless functions open a new database connection per invocation, quickly exhausting the DB's max connection limit.
+mitigations:
+  - rds_proxy
+  - connection_pooling
+  - dynamo_db
+  - limit_concurrency

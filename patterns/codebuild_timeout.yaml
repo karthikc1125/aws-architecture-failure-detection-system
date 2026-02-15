@@ -1,0 +1,9 @@
+pattern: codebuild_timeout
+failure_class: cicd_failure
+conditions:
+- long_build
+- default_timeout
+description: Build phase exceeds 60 mins.
+mitigations:
+- timeout_increase
+- build_optimization

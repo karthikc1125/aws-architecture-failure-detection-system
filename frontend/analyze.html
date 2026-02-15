@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyze | SafeCloud</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            🛡️ <span>SafeCloud</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/analyze" class="active">Analyze</a></li>
+                <li><a href="/methodology">Methodology</a></li>
+
+                <!-- Modern Icon Buttons -->
+                <li>
+                    <button class="nav-icon-btn" onclick="openAIModal()" title="AI Model Selection">
+                        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10zm0 14a4 4 0 1 1 4-4 4 4 0 0 1-4 4z">
+                            </path>
+                            <path d="M12 12m-6 0a6 6 0 1 0 12 0a6 6 0 1 0-12 0"></path>
+                            <path d="M12 2v4"></path>
+                            <path d="M12 18v4"></path>
+                            <path d="M4.93 4.93l2.83 2.83"></path>
+                            <path d="M16.24 16.24l2.83 2.83"></path>
+                            <path d="M2 12h4"></path>
+                            <path d="M18 12h4"></path>
+                            <path d="M4.93 19.07l2.83-2.83"></path>
+                            <path d="M16.24 7.76l2.83-2.83"></path>
+                        </svg>
+                        <span style="margin-left: 0.5rem; font-weight: 500;">AI Model</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-icon-btn" onclick="openSettingsModal()" title="System Settings">
+                        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                            </path>
+                        </svg>
+                        <span style="margin-left: 0.5rem; font-weight: 500;">System</span>
+                    </button>
+                </li>
+
+                <li class="info-dropdown">
+                    <button class="nav-icon-btn" title="More Info">
+                        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <span style="margin-left: 0.5rem; font-weight: 500;">Info</span>
+                    </button>
+                    <div class="info-content">
+                        <a href="mailto:contact@safecloud.ai" class="icon-link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                </path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <span>Email</span>
+                        </a>
+                        <a href="https://github.com/safecloud/aws-failure-detector" target="_blank" class="icon-link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                                </path>
+                            </svg>
+                            <span>GitHub</span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 🤖 AI Modal (Model & Provider Selection) -->
+    <div id="aiModal" class="modal-overlay"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; justify-content: center; align-items: center;">
+        <div class="card"
+            style="width: 450px; background: #0f172a; border: 1px solid #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #1e293b; padding-bottom: 1rem;">
+                <h3 style="margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+                        <path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10zm0 14a4 4 0 1 1 4-4 4 4 0 0 1-4 4z"></path>
+                    </svg>
+                    AI Configuration
+                </h3>
+                <button onclick="closeAIModal()"
+                    style="background: none; border: none; color: #64748b; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+
+            <div class="input-group">
+                <label style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 0.5rem; display: block;">API
+                    Provider</label>
+                <select id="modalProviderSelect" onchange="syncProviderSelection()"
+                    style="width: 100%; padding: 0.8rem; background: #1e293b; border: 1px solid #334155; color: white; border-radius: 6px;">
+                    <option value="openrouter">OpenRouter (Recommended)</option>
+                    <option value="openai">OpenAI Direct</option>
+                    <option value="other">Other (Custom URL)</option>
+                </select>
+                <input type="text" id="modalCustomProvider" placeholder="Enter custom provider..."
+                    style="display: none; width: 100%; padding: 0.8rem; margin-top: 0.5rem; background: #0f172a; border: 1px solid #3b82f6; color: white; border-radius: 6px;">
+            </div>
+
+            <div class="input-group">
+                <label style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 0.5rem; display: block;">API Key</label>
+                <input type="password" id="modalApiKey" placeholder="sk-..."
+                    style="width: 100%; padding: 0.8rem; background: #1e293b; border: 1px solid #334155; color: white; border-radius: 6px; font-family: monospace;">
+            </div>
+
+            <div class="input-group">
+                <label style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 0.5rem; display: block;">Select
+                    Model</label>
+                <select id="modalModelSelect" onchange="syncModelSelection()"
+                    style="width: 100%; padding: 0.8rem; background: #1e293b; border: 1px solid #334155; color: white; border-radius: 6px;">
+                    <optgroup label="Google">
+                        <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash (Free)</option>
+                        <option value="google/gemini-pro-1.5">Gemini 1.5 Pro</option>
+                    </optgroup>
+                    <optgroup label="Meta">
+                        <option value="meta-llama/llama-3.2-3b-instruct:free">Llama 3.2 3B (Free)</option>
+                        <option value="meta-llama/llama-3-70b-instruct">Llama 3 70B</option>
+                    </optgroup>
+                    <optgroup label="OpenAI">
+                        <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
+                        <option value="openai/gpt-4o">GPT-4o</option>
+                        <option value="openai/o1-preview">OpenAI o1</option>
+                    </optgroup>
+                    <optgroup label="Anthropic">
+                        <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+                        <option value="anthropic/claude-3-opus">Claude 3 Opus</option>
+                    </optgroup>
+                    <optgroup label="Custom">
+                        <option value="other">Other (Custom)</option>
+                    </optgroup>
+                </select>
+                <!-- Hidden Input for Custom Model -->
+                <input type="text" id="modalCustomModel" placeholder="Enter custom model ID..."
+                    style="display: none; width: 100%; padding: 0.8rem; margin-top: 0.5rem; background: #0f172a; border: 1px solid #3b82f6; color: white; border-radius: 6px;">
+            </div>
+
+            <div style="text-align: right; margin-top: 1.5rem;">
+                <button onclick="saveAISelection()" class="btn" style="width: 100%;">Save AI Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⚙️ Settings Modal (Environment) -->
+    <div id="settingsModal" class="modal-overlay"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; justify-content: center; align-items: center;">
+        <div class="card"
+            style="width: 450px; background: #0f172a; border: 1px solid #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #1e293b; padding-bottom: 1rem;">
+                <h3 style="margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
+                    System Settings
+                </h3>
+                <button onclick="closeSettingsModal()"
+                    style="background: none; border: none; color: #64748b; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+
+            <!-- Mode Toggle -->
+            <div class="input-group"
+                style="background: #1e293b; padding: 1rem; border-radius: 8px; border: 1px solid #334155;">
+                <label style="display: block; margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.9rem;">Execution
+                    Mode</label>
+                <div style="display: flex; gap: 1rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: white;">
+                        <input type="radio" name="execMode" value="online" checked onchange="toggleModeUI()">
+                        🌍 Online (Live API)
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: white;">
+                        <input type="radio" name="execMode" value="local" onchange="toggleModeUI()">
+                        💻 Local (Offline Sim)
+                    </label>
+                </div>
+            </div>
+
+            <!-- Offline Message (conditionally shown) -->
+            <div id="offlineConfig"
+                style="display: none; margin-top: 1rem; padding: 1rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; color: #34d399;">
+                ✅ <strong>Offline Mode Active:</strong> Analysis will run using the local simulation engine.
+            </div>
+
+            <div style="text-align: right; margin-top: 1.5rem;">
+                <button onclick="saveSystemSettings()" class="btn" style="width: 100%; background: #10b981;">Save
+                    Configuration</button>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="card" style="border-top: 4px solid var(--accent-blue);">
+            <div class="input-group">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Architecture
+                    Description</label>
+                <textarea id="userInput"
+                    placeholder="e.g. I have a user upload service using API Gateway triggering a Lambda function which processes images synchronously and saves metadata to a single DynamoDB partition..."></textarea>
+            </div>
+            <div style="text-align: right;">
+                <button onclick="analyze()" class="btn">🚀 Run Failure Analysis</button>
+            </div>
+        </div>
+
+        <section id="results" style="min-height: 200px;">
+            <!-- Results will be injected here via app.js -->
+            <div style="text-align: center; color: #334155; margin-top: 4rem;">
+                Waiting for input...
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div style="margin-bottom: 0.5rem;">&copy; 2026 SafeCloud AI. All Rights Reserved.</div>
+        <div>
+            <a href="mailto:contact@safecloud.ai" style="color: var(--accent-green); font-weight: 600;">Contact
+                Support</a>
+        </div>
+    </footer>
+
+    <script src="/static/app.js"></script>
+    <script>
+        // Inline Modal Logic for Global Navbar
+        function openAIModal() {
+            document.getElementById('aiModal').style.display = 'flex';
+
+            // Load Saved Provider
+            const savedP = localStorage.getItem('safecloud_online_provider') || 'openrouter';
+            const selP = document.getElementById('modalProviderSelect');
+
+            if (['openrouter', 'openai'].includes(savedP)) selP.value = savedP;
+            else {
+                selP.value = 'other';
+                document.getElementById('modalCustomProvider').style.display = 'block';
+                document.getElementById('modalCustomProvider').value = savedP;
+            }
+
+            // Load Key
+            document.getElementById('modalApiKey').value = localStorage.getItem('safecloud_api_key') || '';
+
+            // Load Saved Model
+            const saved = localStorage.getItem('safecloud_model') || 'google/gemini-2.0-flash-exp:free';
+            const sel = document.getElementById('modalModelSelect');
+            let exists = false;
+            for (let opt of sel.options) if (opt.value === saved) exists = true;
+
+            if (exists) { sel.value = saved; }
+            else {
+                sel.value = 'other';
+                document.getElementById('modalCustomModel').style.display = 'block';
+                document.getElementById('modalCustomModel').value = saved;
+            }
+        }
+        function closeAIModal() { document.getElementById('aiModal').style.display = 'none'; }
+
+        function openSettingsModal() {
+            document.getElementById('settingsModal').style.display = 'flex';
+
+            // Determine Mode (Local vs Online)
+            // If the ACTIVE provider is simulation, we are in local mode.
+            const currentProvider = localStorage.getItem('safecloud_provider') || 'openrouter';
+            let isLocal = (currentProvider === 'simulation');
+
+            // Set Radio Buttons
+            document.querySelector(`input[name="execMode"][value="${isLocal ? 'local' : 'online'}"]`).checked = true;
+
+            toggleModeUI();
+        }
+
+        function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
+
+        // Sync Dropdowns
+        function syncModelSelection() {
+            const val = document.getElementById('modalModelSelect').value;
+            document.getElementById('modalCustomModel').style.display = (val === 'other') ? 'block' : 'none';
+        }
+        function syncProviderSelection() {
+            const val = document.getElementById('modalProviderSelect').value;
+            document.getElementById('modalCustomProvider').style.display = (val === 'other') ? 'block' : 'none';
+        }
+
+        function toggleModeUI() {
+            const mode = document.querySelector('input[name="execMode"]:checked').value;
+            document.getElementById('offlineConfig').style.display = (mode === 'local') ? 'block' : 'none';
+        }
+
+        function saveAISelection() {
+            // Save Provider
+            let prov = document.getElementById('modalProviderSelect').value;
+            if (prov === 'other') prov = document.getElementById('modalCustomProvider').value;
+            localStorage.setItem('safecloud_online_provider', prov);
+
+            // Save Key
+            const key = document.getElementById('modalApiKey').value;
+            localStorage.setItem('safecloud_api_key', key);
+
+            // Save Model
+            let val = document.getElementById('modalModelSelect').value;
+            if (val === 'other') val = document.getElementById('modalCustomModel').value;
+            if (!val) return alert("Enter a model ID");
+            localStorage.setItem('safecloud_model', val);
+
+            // If we are currently in "Online" mode (not simulation), update the ACTIVE provider too
+            const currentActive = localStorage.getItem('safecloud_provider');
+            if (currentActive !== 'simulation') {
+                localStorage.setItem('safecloud_provider', prov);
+            }
+
+            closeAIModal();
+            alert("Updated AI Configuration!");
+        }
+
+        function saveSystemSettings() {
+            const mode = document.querySelector('input[name="execMode"]:checked').value;
+
+            if (mode === 'local') {
+                localStorage.setItem('safecloud_provider', 'simulation');
+            } else {
+                // If switching to online, restore the preferred online provider
+                const onlineProv = localStorage.getItem('safecloud_online_provider') || 'openrouter';
+                localStorage.setItem('safecloud_provider', onlineProv);
+            }
+
+            closeSettingsModal();
+            alert("Updated System Mode: " + (mode === 'local' ? 'Offline Simulation' : 'Online API'));
+        }
+    </script>
+</body>
+
+</html>

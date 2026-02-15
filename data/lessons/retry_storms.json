@@ -1,0 +1,5 @@
+{
+    "lesson_id": "retry-storm",
+    "topic": "Retry Storms",
+    "prevention": "Implement exponential backoff and jitter."
+}

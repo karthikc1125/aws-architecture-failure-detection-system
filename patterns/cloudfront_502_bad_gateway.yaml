@@ -1,0 +1,9 @@
+pattern: cloudfront_502_bad_gateway
+failure_class: connectivity_failure
+conditions:
+- origin_ssl_protocol
+- timeout_origin
+description: CloudFront cannot connect to the origin or SSL handshake fails.
+mitigations:
+- ssl_policy_match
+- origin_timeout_increase

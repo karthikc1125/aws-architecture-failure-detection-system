@@ -1,0 +1,13 @@
+pattern: circular_dependency
+failure_class: architectural_deadlock
+conditions:
+  - service_a_calls_b
+  - service_b_calls_a
+  - synchronous_coupling
+  - tightly_coupled
+description: Two or more services depend on each other synchronously to complete a request, creating a deadlock risk and deployment complexity.
+mitigations:
+  - event_driven_architecture
+  - dependency_inversion
+  - combine_services
+  - async_messaging

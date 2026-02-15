@@ -1,0 +1,13 @@
+pattern: zombie_resource
+failure_class: cost_leakage
+conditions:
+  - manual_provisioning
+  - unattached_ebs
+  - unused_eip
+  - idle_load_balancer
+description: Resources that are provisioned but not used (e.g., unattached volumes), leading to unnecessary costs.
+mitigations:
+  - aws_config_rules
+  - auto_tagging
+  - lifecycle_policy
+  - cost_explorer_alerts

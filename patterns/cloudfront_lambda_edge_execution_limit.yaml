@@ -1,0 +1,13 @@
+pattern: cloudfront_lambda_edge_execution_limit
+failure_class: edge_compute_failure
+conditions:
+  - lambda_at_edge
+  - viewer_request_event
+  - 5_second_timeout
+  - function_error
+description: Lambda@Edge functions triggered on Viewer Request/Response time out if they exceed strict execution limits (5s).
+mitigations:
+  - cloudfront_functions_migration
+  - code_optimization
+  - origin_request_trigger
+  - reduce_dependency_size

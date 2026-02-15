@@ -1,0 +1,13 @@
+pattern: missing_encryption_transit
+failure_class: security_interception
+conditions:
+  - http_listener
+  - port_80
+  - load_balancer_http
+  - unencrypted_traffic
+description: Data transmitted over plain HTTP, making it vulnerable to interception (Man-in-the-Middle attacks).
+mitigations:
+  - acm_certificate
+  - https_listener
+  - tls_1_2
+  - redirect_http_to_https

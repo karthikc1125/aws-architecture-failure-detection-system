@@ -1,0 +1,13 @@
+pattern: emr_master_node_failure
+failure_class: availability_failure
+conditions:
+  - single_master_node
+  - instance_failure
+  - cluster_termination
+  - job_loss
+description: In a single-master EMR cluster, the loss of the master node terminates the entire cluster and running jobs.
+mitigations:
+  - multi_master_deployment
+  - termination_protection
+  - checkpointing_to_s3
+  - master_node_recovery

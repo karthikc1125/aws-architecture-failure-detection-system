@@ -1,0 +1,9 @@
+pattern: app_runner_build_error
+failure_class: deployment_failure
+conditions:
+- runtime_version
+- build_command
+description: Service creation fails.
+mitigations:
+- log_stream_check
+- config_update

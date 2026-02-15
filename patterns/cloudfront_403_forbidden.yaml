@@ -1,0 +1,9 @@
+pattern: cloudfront_403_forbidden
+failure_class: security_blocking
+conditions:
+- geo_restriction
+- waf_block
+description: CloudFront blocks request due to Geo or WAF rules.
+mitigations:
+- waf_log_analysis
+- geo_whitelist

@@ -1,0 +1,6 @@
+{
+    "incident_id": "s3-partial-outage-2020",
+    "title": "S3 Partial Outage",
+    "date": "2020",
+    "description": "Partial availability issues affecting specific API calls."
+}

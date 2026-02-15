@@ -1,0 +1,9 @@
+pattern: sns_delivery_failure
+failure_class: notification_loss
+conditions:
+- topic_policy_deny
+- subscription_filter
+description: Messages not reaching subscribers.
+mitigations:
+- delivery_status_logging
+- dead_letter_queue

@@ -1,0 +1,42 @@
+{
+  "0": {
+    "decision_id": "async-vs-sync",
+    "title": "Async vs Sync Processing",
+    "status": "decided",
+    "context": "High volume of requests causing timeouts.",
+    "decision": "Use asynchronous processing via queues where immediate response is not required."
+  },
+  "1": {
+    "lesson_id": "retry-storm",
+    "topic": "Retry Storms",
+    "prevention": "Implement exponential backoff and jitter."
+  },
+  "2": {
+    "lesson_id": "control-plane-dependency",
+    "topic": "Control Plane Dependency",
+    "rule": "Avoid critical path dependencies on control plane APIs."
+  },
+  "3": {
+    "incident_id": "s3-partial-outage-2020",
+    "title": "S3 Partial Outage",
+    "date": "2020",
+    "description": "Partial availability issues affecting specific API calls."
+  },
+  "4": {
+    "incident_id": "dynamodb-hot-partition-example",
+    "title": "DynamoDB Hot Partition Issue",
+    "description": "Performance degradation due to uneven access patterns."
+  },
+  "5": {
+    "incident_id": "aws-us-east-1-2017",
+    "title": "AWS S3 Outage in US-EAST-1",
+    "date": "2017-02-28",
+    "primary_service": "S3",
+    "impact": "Cascade failure across dependent services",
+    "root_cause": "Human error during capacity removal command",
+    "lessons_learned": [
+      "Limit blast radius of control plane operations",
+      "Implement health check safeguards"
+    ]
+  }
+}

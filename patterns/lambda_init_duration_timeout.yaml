@@ -1,0 +1,13 @@
+pattern: lambda_init_duration_timeout
+failure_class: cold_start_failure
+conditions:
+  - heavy_library_import
+  - machine_learning_model_loading
+  - synchronous_api_gateway_trigger
+  - 29_second_hard_limit
+description: Function initialization (import/setup) takes longer than 10 seconds (or API Gateway 29s limit), causing 504 errors before handler runs.
+mitigations:
+  - provisioned_concurrency
+  - lazy_loading_modules
+  - lambda_snapstart
+  - increase_memory_power_tuning

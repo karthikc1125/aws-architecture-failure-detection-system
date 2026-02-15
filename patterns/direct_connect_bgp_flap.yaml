@@ -1,0 +1,9 @@
+pattern: direct_connect_bgp_flap
+failure_class: connectivity_failure
+conditions:
+- route_limit_exceeded
+- device_configuration
+description: BGP session fluctuates causing packet loss.
+mitigations:
+- bgp_timeout_tuning
+- jumbo_frames_check

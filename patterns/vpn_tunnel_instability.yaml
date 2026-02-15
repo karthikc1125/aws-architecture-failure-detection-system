@@ -1,0 +1,9 @@
+pattern: vpn_tunnel_instability
+failure_class: connectivity_failure
+conditions:
+- ike_negotiation
+- dpd_timeout
+description: VPN connection drops frequently.
+mitigations:
+- customer_gateway_logs
+- keepalive_ping

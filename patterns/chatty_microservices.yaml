@@ -1,0 +1,13 @@
+pattern: chatty_microservices
+failure_class: latency_amplification
+conditions:
+  - n_plus_1_calls
+  - loop_api_call
+  - granular_api
+  - high_network_overhead
+description: One service makes multiple separate network calls to another service to complete a single operation (N+1 problem), drastically increasing latency.
+mitigations:
+  - batch_api_endpoints
+  - graphql_federation
+  - data_replication
+  - caching_layer

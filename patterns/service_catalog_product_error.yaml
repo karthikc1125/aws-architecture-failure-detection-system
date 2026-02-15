@@ -1,0 +1,9 @@
+pattern: service_catalog_product_error
+failure_class: provisioning_failure
+conditions:
+- launch_constraint
+- role_missing
+description: User cannot launch product.
+mitigations:
+- portfolio_access
+- constraint_review

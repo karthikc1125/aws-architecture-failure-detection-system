@@ -1,0 +1,9 @@
+pattern: elastic_beanstalk_red_health
+failure_class: app_failure
+conditions:
+- nginx_500
+- deployment_hook
+description: Environment status turns severe.
+mitigations:
+- log_snapshot
+- rollback_version

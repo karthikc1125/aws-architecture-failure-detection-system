@@ -1,0 +1,9 @@
+pattern: lambda_layer_version_error
+failure_class: deployment_failure
+conditions:
+- deleted_layer_version
+- permission_denied
+description: Function fails to start because the specified layer version is missing.
+mitigations:
+- serverless_framework_layer
+- lambda_layer_permission

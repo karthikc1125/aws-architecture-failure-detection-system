@@ -1,0 +1,13 @@
+pattern: iot_shadow_update_conflict
+failure_class: state_inconsistency
+conditions:
+  - device_shadow_service
+  - concurrent_updates
+  - version_mismatch
+  - rejected_update
+description: Concurrent updates to an IoT Device Shadow fail due to version conflicts, discarding legitimate state changes.
+mitigations:
+  - optimistic_locking_version
+  - limit_update_rate
+  - delta_topic_subscription
+  - last_write_wins_logic

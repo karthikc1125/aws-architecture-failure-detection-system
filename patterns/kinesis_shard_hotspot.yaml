@@ -1,0 +1,13 @@
+pattern: kinesis_shard_hotspot
+failure_class: throttling
+conditions:
+  - sequential_partition_key
+  - monotonic_counter
+  - timestamp_as_key
+  - single_shard_saturation
+description: Using a monotonic partition key (e.g., timestamp) directs all write traffic to a single shard, throttling the entire stream.
+mitigations:
+  - high_cardinality_partition_key
+  - random_uuid_suffix
+  - kinesis_scaling_utility
+  - dynamic_partitioning

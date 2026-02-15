@@ -1,0 +1,13 @@
+pattern: eks_pv_stuck_terminating
+failure_class: storage_failure
+conditions:
+  - persistent_volume_claim
+  - finalizers_blocking
+  - node_failure
+  - volume_attachment_lock
+description: Persistent Volums (PV) gets stuck in 'Terminating' state because it is still attached to a failed node or pod.
+mitigations:
+  - force_delete_pv
+  - patch_finalizer
+  - csi_driver_upgrade
+  - node_termination_handler

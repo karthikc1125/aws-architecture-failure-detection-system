@@ -1,0 +1,13 @@
+pattern: dynamodb_throttling
+failure_class: limited_capacity
+conditions:
+  - frequent_read_write_spikes
+  - insufficient_provisioning
+  - hot_partition_access
+description: Read/write requests exceed provisioned capacity units (RCU/WCU), causing 400 ProvisionedThroughputExceededException errors.
+mitigations:
+  - auto_scaling
+  - request_coalescing
+  - exponential_backoff
+  - cache
+  - dax

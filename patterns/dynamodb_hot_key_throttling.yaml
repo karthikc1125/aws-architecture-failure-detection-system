@@ -1,0 +1,13 @@
+pattern: dynamodb_hot_key_throttling
+failure_class: performance_degradation
+conditions:
+  - low_cardinality_partition_key
+  - write_heavy_workload
+  - monotonic_sequence_key
+  - single_partition_saturation
+description: A specific partition key (e.g., 'status=active' or current date) receives uneven write traffic, causing hot partition throttling.
+mitigations:
+  - random_suffix_sharding
+  - write_sharding_compound_key
+  - adaptive_capacity_on_demand
+  - dax_write_through

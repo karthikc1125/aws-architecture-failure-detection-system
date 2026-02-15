@@ -1,0 +1,14 @@
+pattern: nat_gateway_exhaustion
+failure_class: network_bottleneck
+conditions:
+  - concurrent_egress_burst
+  - high_port_allocation
+  - missing_private_link
+  - public_subnet_workload
+description: Thousands of connections from private subnets (e.g., Lambda) deplete the NAT Gateway's limited source ports, dropping packets.
+mitigations:
+  - vpc_endpoints
+  - ipv6_egress_gateway
+  - multi_nat_gateway
+  - random_backoff
+  - batch_api_calls

@@ -1,0 +1,9 @@
+pattern: kms_throttling_exception
+failure_class: throttling
+conditions:
+- high_request_rate
+- generate_data_key
+description: Exceeding KMS API request quota (e.g., 5500 RPS).
+mitigations:
+- data_key_caching
+- quota_increase

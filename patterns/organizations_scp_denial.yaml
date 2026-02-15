@@ -1,0 +1,9 @@
+pattern: organizations_scp_denial
+failure_class: permission_denied
+conditions:
+- root_policy
+- implicit_deny
+description: Account admin cannot perform action due to SCP.
+mitigations:
+- scp_audit
+- policy_simulation

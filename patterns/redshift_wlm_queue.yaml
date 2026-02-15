@@ -1,0 +1,14 @@
+pattern: redshift_wlm_queue
+failure_class: query_contention
+conditions:
+  - concurrent_queries
+  - insufficient_memory_allocation
+  - disk_spill
+  - long_running_analytics
+description: Queries are stuck in the WLM (Workload Management) queue, timing out due to concurrency limits.
+mitigations:
+  - concurrency_scaling
+  - query_priority_queues
+  - short_query_acceleration
+  - materialized_views
+  - spectrum_offloading

@@ -1,0 +1,9 @@
+pattern: ec2_launch_template_version_mismatch
+failure_class: deployment_failure
+conditions:
+- wrong_ami_id
+- userdata_error
+description: ASG fails to launch instances due to invalid template version.
+mitigations:
+- launch_template_versioning
+- asg_instance_refresh

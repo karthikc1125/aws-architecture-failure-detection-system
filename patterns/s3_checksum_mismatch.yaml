@@ -1,0 +1,13 @@
+pattern: s3_checksum_mismatch
+failure_class: data_integrity_failure
+conditions:
+  - multipart_upload
+  - custom_encryption_client
+  - network_corruption
+  - missing_content_md5
+description: Data uploaded to S3 is corrupted in transit because Content-MD5 or SHA256 checksum validation was not enforced.
+mitigations:
+  - s3_checksum_validation
+  - trailing_checksums
+  - client_side_encryption
+  - transfer_acceleration

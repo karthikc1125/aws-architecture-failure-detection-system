@@ -1,0 +1,7 @@
+{
+    "decision_id": "async-vs-sync",
+    "title": "Async vs Sync Processing",
+    "status": "decided",
+    "context": "High volume of requests causing timeouts.",
+    "decision": "Use asynchronous processing via queues where immediate response is not required."
+}

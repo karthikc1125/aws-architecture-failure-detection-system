@@ -1,0 +1,10 @@
+pattern: dynamodb_partition_split_hotspot
+failure_class: throttling
+conditions:
+- sequential_writes
+- imbalanced_access
+description: Traffic is skewed to a single partition key, causing throttling despite
+  overall capacity.
+mitigations:
+- sharding_suffix
+- adaptive_capacity

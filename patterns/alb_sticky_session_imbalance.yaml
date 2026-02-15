@@ -1,0 +1,13 @@
+pattern: alb_sticky_session_imbalance
+failure_class: load_balancing_failure
+conditions:
+  - long_lived_connections
+  - uneven_traffic_distribution
+  - autoscaling_lag
+  - hot_instance_overload
+description: Sticky sessions (session affinity) pin users to specific instances, preventing even load distribution and causing hotspots.
+mitigations:
+  - disable_stickiness
+  - application_layer_state
+  - redis_session_store
+  - least_outstanding_requests_algorithm

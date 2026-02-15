@@ -1,0 +1,13 @@
+pattern: s3_race_condition
+failure_class: data_integrity_loss
+conditions:
+  - s3_overwrite
+  - high_concurrency_write
+  - same_key_access
+  - no_versioning
+description: Multiple writers updating the same S3 object key simultaneously without locking, leading to the Last-Writer-Wins data loss.
+mitigations:
+  - s3_versioning
+  - dynamo_db_locking
+  - optimistic_concurrency
+  - unique_prefixes

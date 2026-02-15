@@ -1,0 +1,9 @@
+pattern: mq_broker_memory_full
+failure_class: resource_exhaustion
+conditions:
+- heap_memory
+- unconsumed_messages
+description: ActiveMQ/RabbitMQ broker blocks producers.
+mitigations:
+- instance_resize
+- consumer_scaling

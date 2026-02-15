@@ -1,0 +1,9 @@
+pattern: ecs_capacity_provider_error
+failure_class: scaling_failure
+conditions:
+- asg_cooldown
+- step_scaling
+description: Cluster fails to scale out instances for tasks.
+mitigations:
+- capacity_provider_strategy
+- target_tracking_policy

@@ -1,0 +1,9 @@
+pattern: regional_spof
+failure_class: single_point_of_failure
+conditions:
+  - single_region_deployment
+  - region_wide_outage
+mitigations:
+  - multi_region_active_active
+  - multi_region_active_passive
+  - global_traffic_manager

@@ -1,0 +1,9 @@
+pattern: glue_crawler_schema_mismatch
+failure_class: data_quality_error
+conditions:
+- partition_conflict
+- type_change
+description: Crawler creates conflicting tables.
+mitigations:
+- exclude_pattern
+- schema_evolution_option

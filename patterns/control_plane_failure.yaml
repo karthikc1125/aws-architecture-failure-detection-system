@@ -1,0 +1,9 @@
+pattern: control_plane_failure
+failure_class: dependency_failure
+conditions:
+  - frequent_control_plane_calls
+  - data_plane_dependency_on_control_plane
+mitigations:
+  - cache_control_plane_data
+  - static_configuration
+  - remove_runtime_dependency

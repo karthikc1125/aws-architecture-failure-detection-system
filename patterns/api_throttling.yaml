@@ -1,0 +1,13 @@
+pattern: api_throttling
+failure_class: performance_degradation
+conditions:
+  - high_concurrency
+  - burst_traffic
+  - synchronous_api_call
+  - unthrottled_requests
+description: Users or internal services overwhelm an API endpoint, hitting account limits or service quotas (e.g., API Gateway RPS).
+mitigations:
+  - api_gateway_throttling
+  - usage_plans
+  - caching
+  - exponential_backoff

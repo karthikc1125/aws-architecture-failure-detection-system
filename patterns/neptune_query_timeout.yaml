@@ -1,0 +1,9 @@
+pattern: neptune_query_timeout
+failure_class: performance_degradation
+conditions:
+- complex_gremlin_traversal
+- large_graph_scan
+description: Graph queries time out due to lack of optimization.
+mitigations:
+- query_explain
+- instance_resize

@@ -1,0 +1,13 @@
+pattern: ecs_rolling_update_stuck
+failure_class: deployment_failure
+conditions:
+  - health_check_grace_period_short
+  - unhealthy_container_replacement
+  - resource_constraint
+  - deployment_circuit_breaker_disabled
+description: ECS Service continually kills and restarts new tasks because they fail health checks, blocking the deployment indefinitely.
+mitigations:
+  - health_check_grace_period_extension
+  - deployment_circuit_breaker
+  - container_dependency_resolution
+  - log_driver_debug

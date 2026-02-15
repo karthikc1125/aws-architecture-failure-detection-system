@@ -1,0 +1,9 @@
+pattern: rekognition_throttling
+failure_class: ai_service_throttling
+conditions:
+- tps_limit
+- concurrent_calls
+description: Image processing requests rejected.
+mitigations:
+- backoff_strategy
+- limit_increase

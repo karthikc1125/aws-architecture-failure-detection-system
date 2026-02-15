@@ -1,0 +1,9 @@
+pattern: transfer_family_ssh_key_error
+failure_class: auth_failure
+conditions:
+- key_format
+- user_permission
+description: SFTP user cannot login.
+mitigations:
+- key_validation
+- logging_role

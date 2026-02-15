@@ -1,0 +1,13 @@
+pattern: sqs_batch_failure_partial
+failure_class: operational_failure
+conditions:
+  - batch_processing_lambda
+  - single_record_failure
+  - default_error_handling
+  - entire_batch_retry
+description: One bad message in an SQS batch causes the entire batch to fail and be re-processed, leading to poison pill loops.
+mitigations:
+  - report_batch_item_failures
+  - idempotency_implementation
+  - dead_letter_queue_redrive
+  - smaller_batch_size

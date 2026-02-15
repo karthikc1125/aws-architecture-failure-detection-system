@@ -1,0 +1,13 @@
+pattern: sns_subscription_filter_drop
+failure_class: notification_loss
+conditions:
+  - complex_filter_policy
+  - attribute_mismatch
+  - missing_message_attribute
+  - silent_drop
+description: Messages are silently discarded because they do not match any Subscription Filter Policy, with no visibility.
+mitigations:
+  - cloudwatch_delivery_status
+  - catch_all_subscription
+  - policy_validation_test
+  - dead_letter_queue

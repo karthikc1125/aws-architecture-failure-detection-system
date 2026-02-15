@@ -1,0 +1,13 @@
+pattern: waf_false_positive
+failure_class: security_blocking
+conditions:
+  - strict_rule_sets
+  - legitimate_traffic_spike
+  - sql_injection_false_alarm
+  - missing_whitelist
+description: Overly aggressive WAF rule blocks legitimate API traffic (e.g., JSON payloads) causing sporadic 403 Forbidden errors.
+mitigations:
+  - waf_counting_mode
+  - custom_whitelist_rule
+  - ip_rate_limiting
+  - bot_control_managed_rule

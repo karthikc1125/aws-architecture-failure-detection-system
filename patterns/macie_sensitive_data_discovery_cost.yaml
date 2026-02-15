@@ -1,0 +1,13 @@
+pattern: macie_sensitive_data_discovery_cost
+failure_class: cost_anomaly
+conditions:
+  - automated_sensitive_data_discovery
+  - full_bucket_scan
+  - petabyte_scale_data
+  - unintended_scan
+description: Macie automated discovery scans entire S3 buckets, leading to high costs ($1.00/GB) if not scoped correctly.
+mitigations:
+  - discovery_scope_definition
+  - sampling_percentage
+  - object_criteria_filtering
+  - cost_allowance_limit

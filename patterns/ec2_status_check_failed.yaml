@@ -1,0 +1,10 @@
+pattern: ec2_status_check_failed
+failure_class: availability_failure
+conditions:
+- system_status_check
+- instance_status_check
+- underlying_hardware_fault
+description: Instance becomes unreachable due to hardware or OS failure.
+mitigations:
+- auto_recovery
+- cloudwatch_alarm_reboot

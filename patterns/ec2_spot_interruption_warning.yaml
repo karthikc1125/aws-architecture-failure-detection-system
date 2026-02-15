@@ -1,0 +1,10 @@
+pattern: ec2_spot_interruption_warning
+failure_class: availability_risk
+conditions:
+- spot_price_spike
+- capacity_reclamation
+description: Spot instances are reclaimed with 2-minute warning.
+mitigations:
+- spot_fleet
+- checkpointing
+- mixed_instances_policy

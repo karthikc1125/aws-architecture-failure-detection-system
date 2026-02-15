@@ -1,0 +1,9 @@
+pattern: athena_partition_limit
+failure_class: performance_degradation
+conditions:
+- too_many_partitions
+- hive_metastore_limit
+description: Query fails or runs slowly due to partition overhead.
+mitigations:
+- partition_projection
+- schema_optimization

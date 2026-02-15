@@ -1,0 +1,9 @@
+pattern: codedeploy_agent_not_found
+failure_class: deployment_failure
+conditions:
+- service_not_running
+- outdated_agent
+description: Deployment hangs waiting for agent.
+mitigations:
+- agent_restart
+- user_data_install

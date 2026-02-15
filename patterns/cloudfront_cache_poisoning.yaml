@@ -1,0 +1,13 @@
+pattern: cloudfront_cache_poisoning
+failure_class: edge_vulnerability
+conditions:
+  - unvalidated_headers
+  - varying_origin_response
+  - improper_cache_key
+  - request_smuggling
+description: Attacker tricks CloudFront into caching a malicious response (e.g., XSS script), serving it to all subsequent users globally.
+mitigations:
+  - cache_key_policy_strict
+  - waf_rules_managed
+  - origin_access_control
+  - strict_origin_validation

@@ -1,0 +1,13 @@
+pattern: eks_cni_ip_exhaustion
+failure_class: network_exhaustion
+conditions:
+  - max_pods_density
+  - small_subnet_ipv4
+  - rapid_auto_scaling
+  - vpc_cni_plugin
+description: AWS VPC CNI plugin fails to allocate secondary ENI IPs for new pods due to subnet exhaustion in VPC.
+mitigations:
+  - vpc_cni_prefix_delegation
+  - secondary_cidr_block
+  - ipv6_cluster
+  - reduce_max_pods

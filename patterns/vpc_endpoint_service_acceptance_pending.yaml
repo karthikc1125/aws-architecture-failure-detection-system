@@ -1,0 +1,13 @@
+pattern: vpc_endpoint_service_acceptance_pending
+failure_class: connectivity_delay
+conditions:
+  - private_link
+  - manual_acceptance_required
+  - connection_pending_state
+  - automated_deployment_fail
+description: Interface Endpoint creation hangs in 'Pending Acceptance' because the Endpoint Service requires manual approval.
+mitigations:
+  - auto_accept_configuration
+  - whitelist_principals
+  - infrastructure_as_code_check
+  - notifications_sns

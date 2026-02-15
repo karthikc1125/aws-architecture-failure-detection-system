@@ -1,0 +1,9 @@
+pattern: global_accelerator_endpoint_unhealthy
+failure_class: routing_failure
+conditions:
+- health_check_fail
+- region_down
+description: Traffic not routed to endpoint.
+mitigations:
+- health_check_tuning
+- endpoint_group_update

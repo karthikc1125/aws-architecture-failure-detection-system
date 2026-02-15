@@ -1,0 +1,9 @@
+pattern: quicksight_spice_capacity
+failure_class: performance_degradation
+conditions:
+- dataset_refresh_fail
+- gb_limit
+description: Dashboard data not updating.
+mitigations:
+- spice_capacity_purchase
+- incremental_refresh

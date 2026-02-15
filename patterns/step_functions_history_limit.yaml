@@ -1,0 +1,13 @@
+pattern: step_functions_history_limit
+failure_class: workflow_limit
+conditions:
+  - massive_loop_iterator
+  - large_parallel_map
+  - long_running_standard_workflow
+  - recursive_failure
+description: Step Function execution exceeds the 25,000 history event limit in Standard Workflows, causing an abrupt stop.
+mitigations:
+  - express_workflows
+  - nested_workflows
+  - lambda_iterator
+  - map_state_distributed_mode

@@ -1,0 +1,9 @@
+pattern: retry_storm
+failure_class: retry_amplification
+conditions:
+  - partial_outage
+  - synchronous_calls
+mitigations:
+  - async_queue
+  - exponential_backoff
+example_incident: "aws_us_east_2017" # Referenced incident ID

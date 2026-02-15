@@ -1,0 +1,5 @@
+{
+    "incident_id": "dynamodb-hot-partition-example",
+    "title": "DynamoDB Hot Partition Issue",
+    "description": "Performance degradation due to uneven access patterns."
+}

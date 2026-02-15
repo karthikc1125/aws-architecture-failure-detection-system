@@ -1,0 +1,13 @@
+pattern: iot_core_message_broker_throttling
+failure_class: ingestion_failure
+conditions:
+  - high_message_velocity
+  - publish_limit_exceeded
+  - connect_storm
+  - device_reconnection
+description: IoT Core throttles message publishing or connection attempts during a device fleet reconnection storm.
+mitigations:
+  - jitter_reconnection
+  - exponential_backoff
+  - quota_increase
+  - kinesis_integration

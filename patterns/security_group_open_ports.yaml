@@ -1,0 +1,13 @@
+pattern: security_group_open_ports
+failure_class: network_vulnerability
+conditions:
+  - catch_all_cidr
+  - ssh_port_22_open
+  - rdp_port_3389_open
+  - management_port_exposure
+description: Security groups allow ingress from 0.0.0.0/0 on sensitive ports (SSH, RDP, MySQL), enabling brute force attacks.
+mitigations:
+  - session_manager
+  - client_vpn
+  - prefix_list
+  - security_group_audit

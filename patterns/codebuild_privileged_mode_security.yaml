@@ -1,0 +1,13 @@
+pattern: codebuild_privileged_mode_security
+failure_class: security_vulnerability
+conditions:
+  - docker_in_docker
+  - privileged_mode_true
+  - untrusted_code_execution
+  - container_breakout
+description: Enabling 'Privileged Mode' in CodeBuild allows Docker-in-Docker but exposes the host environment to potential container escape.
+mitigations:
+  - kaniko_build_tool
+  - isolated_build_environment
+  - least_privilege_role
+  - vulnerability_scanning

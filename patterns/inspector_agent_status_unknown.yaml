@@ -1,0 +1,9 @@
+pattern: inspector_agent_status_unknown
+failure_class: compliance_failure
+conditions:
+- ssm_agent_issue
+- network_blocked
+description: EC2 instances not reporting scan results.
+mitigations:
+- ssm_agent_troubleshoot
+- endpoint_verification

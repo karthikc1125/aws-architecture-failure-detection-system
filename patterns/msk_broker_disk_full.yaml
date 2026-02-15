@@ -1,0 +1,9 @@
+pattern: msk_broker_disk_full
+failure_class: availability_failure
+conditions:
+- log_retention
+- high_throughput
+description: Kafka broker stops accepting writes.
+mitigations:
+- storage_autoscaling
+- retention_policy_update

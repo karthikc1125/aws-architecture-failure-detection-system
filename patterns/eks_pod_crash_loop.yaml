@@ -1,0 +1,13 @@
+pattern: eks_pod_crash_loop
+failure_class: container_failure
+conditions:
+  - app_startup_error
+  - liveness_probe_failure
+  - misconfigured_env_vars
+  - read_only_filesystem
+description: Kubernetes Pod enters CrashLoopBackOff state due to application panic, OOMKill, or missing dependencies on startup.
+mitigations:
+  - init_container_dependency_check
+  - liveness_readiness_probe_tuning
+  - correct_image_tag
+  - downward_api_verification

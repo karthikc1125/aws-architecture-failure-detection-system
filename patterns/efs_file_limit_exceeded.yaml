@@ -1,0 +1,9 @@
+pattern: efs_file_limit_exceeded
+failure_class: resource_exhaustion
+conditions:
+- too_many_files_in_directory
+- nfs_lookup_latency
+description: Performance degrades when directory contains millions of files.
+mitigations:
+- directory_sharding
+- fsx_lustre

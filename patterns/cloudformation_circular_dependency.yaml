@@ -1,0 +1,9 @@
+pattern: cloudformation_circular_dependency
+failure_class: deployment_failure
+conditions:
+- resource_ref_loop
+- output_import
+description: Stack update fails due to cycle.
+mitigations:
+- refactoring
+- parameter_store

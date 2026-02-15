@@ -1,0 +1,9 @@
+pattern: emr_step_failure
+failure_class: analytics_failure
+conditions:
+- memory_limit
+- script_error
+description: Cluster step execution fails.
+mitigations:
+- log_analysis
+- cluster_resize

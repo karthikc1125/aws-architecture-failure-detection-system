@@ -1,0 +1,9 @@
+pattern: guardduty_finding_noise
+failure_class: operational_fatigue
+conditions:
+- false_positives
+- scanner_activity
+description: Alert fatigue from low-severity findings.
+mitigations:
+- suppression_rule
+- finding_filter

@@ -1,0 +1,13 @@
+pattern: public_database
+failure_class: security_vulnerability
+conditions:
+  - public_subnet
+  - open_security_group
+  - rds_publicly_accessible
+  - port_3306_open_0.0.0.0/0
+description: Database instance is directly accessible from the public internet, increasing attack surface.
+mitigations:
+  - private_subnet
+  - bastion_host
+  - vpn_connection
+  - strict_security_groups

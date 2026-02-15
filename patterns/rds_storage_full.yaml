@@ -1,0 +1,10 @@
+pattern: rds_storage_full
+failure_class: availability_failure
+conditions:
+- autoscaling_disabled
+- log_growth
+- temp_files
+description: Database instance enters STORAGE_FULL state and stops accepting writes.
+mitigations:
+- storage_autoscaling
+- cloudwatch_storage_alarm

@@ -1,0 +1,9 @@
+pattern: iot_certificate_inactive
+failure_class: device_connectivity
+conditions:
+- status_inactive
+- policy_not_attached
+description: Device cannot connect to MQTT broker.
+mitigations:
+- certificate_activation
+- policy_attachment

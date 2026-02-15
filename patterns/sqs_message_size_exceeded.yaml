@@ -1,0 +1,9 @@
+pattern: sqs_message_size_exceeded
+failure_class: application_error
+conditions:
+- large_payload
+- 256kb_limit
+description: Producer fails to send message > 256KB.
+mitigations:
+- s3_claim_check_pattern
+- payload_compression

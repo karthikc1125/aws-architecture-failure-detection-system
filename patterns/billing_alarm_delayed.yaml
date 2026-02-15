@@ -1,0 +1,9 @@
+pattern: billing_alarm_delayed
+failure_class: cost_anomaly
+conditions:
+- metric_latency
+- estimated_charges
+description: Cost alert received 24h late.
+mitigations:
+- cost_anomaly_detection
+- daily_report

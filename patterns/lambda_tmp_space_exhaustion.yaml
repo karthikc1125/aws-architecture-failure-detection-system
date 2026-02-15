@@ -1,0 +1,13 @@
+pattern: lambda_tmp_space_exhaustion
+failure_class: resource_exhaustion
+conditions:
+  - large_file_processing
+  - video_transcoding
+  - 10_gb_ephemeral_storage_limit
+  - sequential_invocations_reuse
+description: Function fills up the /tmp directory (up to 10GB max), causing 'No space left on device' errors in subsequent warm invocations.
+mitigations:
+  - s3_multipart_upload_stream
+  - efs_lambda_mount
+  - cleanup_tmp_logic
+  - ephemeral_storage_configuration

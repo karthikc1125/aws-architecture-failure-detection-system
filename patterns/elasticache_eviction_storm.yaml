@@ -1,0 +1,9 @@
+pattern: elasticache_eviction_storm
+failure_class: data_loss
+conditions:
+- maxmemory_policy
+- memory_fragmentation
+description: Redis evicts keys aggressively due to memory pressure.
+mitigations:
+- cluster_resize
+- param_group_tuning

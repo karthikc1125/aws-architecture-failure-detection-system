@@ -1,0 +1,10 @@
+pattern: s3_request_limit_throttling
+failure_class: performance_degradation
+conditions:
+- high_rps_per_prefix
+- sequential_key_names
+description: Exceeding 3,500 PUT or 5,500 GET requests per second per prefix.
+mitigations:
+- s3_prefix_randomization
+- cloudfront_distribution
+- s3_intelligent_tiering

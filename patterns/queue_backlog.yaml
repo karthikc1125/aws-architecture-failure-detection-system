@@ -1,0 +1,13 @@
+pattern: queue_backlog
+failure_class: processing_lag
+conditions:
+  - producer_faster_than_consumer
+  - slow_consumer
+  - growing_queue_depth
+  - lack_of_autoscaling
+description: Rate of message production consistently exceeds consumption rate, causing invisible latency buildup and eventual memory exhaustion.
+mitigations:
+  - consumer_autoscaling
+  - kinesis_enhanced_fanout
+  - backpressure_mechanism
+  - parallel_processing

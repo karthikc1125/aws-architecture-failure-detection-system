@@ -1,0 +1,9 @@
+pattern: codepipeline_source_auth_error
+failure_class: cicd_failure
+conditions:
+- github_token_expiry
+- webhook_failure
+description: Pipeline trigger fails.
+mitigations:
+- token_rotation
+- polling_mode

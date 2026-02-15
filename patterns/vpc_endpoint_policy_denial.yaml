@@ -1,0 +1,9 @@
+pattern: vpc_endpoint_policy_denial
+failure_class: connectivity_failure
+conditions:
+- restrictive_vpce_policy
+- s3_access_denied
+description: VPC Endpoint policy blocks legitimate access to service.
+mitigations:
+- policy_simulator
+- least_privilege_review

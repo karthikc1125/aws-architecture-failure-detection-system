@@ -1,0 +1,9 @@
+pattern: eventbridge_rule_disabled
+failure_class: operational_failure
+conditions:
+- manual_state_change
+- account_disable
+description: Scheduled events stop triggering.
+mitigations:
+- cloudtrail_audit
+- rule_state_monitor

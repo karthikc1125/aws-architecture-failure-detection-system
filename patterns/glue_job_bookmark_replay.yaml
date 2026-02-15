@@ -1,0 +1,13 @@
+pattern: glue_job_bookmark_replay
+failure_class: data_duplication
+conditions:
+  - job_bookmark_disabled
+  - job_retry
+  - non_idempotent_write
+  - s3_target
+description: Retrying a Glue ETL job without bookmarks enabled re-processes all source data, causing duplicates in the target.
+mitigations:
+  - enable_job_bookmarks
+  - idempotent_sink_logic
+  - temp_directory_cleanup
+  - job_run_id_tracking

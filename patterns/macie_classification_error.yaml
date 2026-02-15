@@ -1,0 +1,9 @@
+pattern: macie_classification_error
+failure_class: security_check_fail
+conditions:
+- job_error
+- access_denied
+description: Sensitive data scan fails.
+mitigations:
+- permission_fix
+- job_scope_check

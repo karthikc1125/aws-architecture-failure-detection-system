@@ -1,0 +1,13 @@
+pattern: quicksight_spice_refresh_failure
+failure_class: visualization_stale
+conditions:
+  - spice_capacity_limit
+  - dataset_refresh_schedule
+  - row_limit_exceeded
+  - ingestion_failure
+description: QuickSight SPICE dataset refresh fails due to capacity limits or SQL timeouts, leaving dashboards with stale data.
+mitigations:
+  - incremental_refresh
+  - spice_capacity_purchase
+  - dataset_filtering
+  - query_optimization

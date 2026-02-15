@@ -1,0 +1,123 @@
+{
+    "format_version": "1.0",
+    "terraform_version": "1.3.0",
+    "planned_values": {
+        "root_module": {
+            "resources": [
+                {
+                    "address": "aws_lambda_function.api",
+                    "mode": "managed",
+                    "type": "aws_lambda_function",
+                    "name": "api",
+                    "values": {
+                        "function_name": "api-function",
+                        "handler": "index.handler",
+                        "runtime": "nodejs14.x",
+                        "timeout": 60,
+                        "memory_size": 1024
+                    }
+                },
+                {
+                    "address": "aws_db_instance.main",
+                    "mode": "managed",
+                    "type": "aws_db_instance",
+                    "name": "main",
+                    "values": {
+                        "allocated_storage": 100,
+                        "engine": "postgres",
+                        "instance_class": "db.r5.large",
+                        "multi_az": true,
+                        "storage_encrypted": true,
+                        "backup_retention_period": 14
+                    }
+                },
+                {
+                    "address": "aws_sqs_queue.orders",
+                    "mode": "managed",
+                    "type": "aws_sqs_queue",
+                    "name": "orders",
+                    "values": {
+                        "name": "orders-queue"
+                    }
+                }
+            ]
+        }
+    },
+    "resource_changes": [
+        {
+            "address": "aws_lambda_function.api",
+            "mode": "managed",
+            "type": "aws_lambda_function",
+            "name": "api",
+            "change": {
+                "actions": [
+                    "create"
+                ],
+                "before": null,
+                "after": {
+                    "function_name": "api-function",
+                    "handler": "index.handler",
+                    "runtime": "nodejs14.x",
+                    "timeout": 60,
+                    "memory_size": 1024,
+                    "environment": {
+                        "variables": {
+                            "DB_HOST": "${aws_db_instance.main.address}",
+                            "QUEUE_URL": "${aws_sqs_queue.orders.id}"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "address": "aws_db_instance.main",
+            "mode": "managed",
+            "type": "aws_db_instance",
+            "name": "main",
+            "change": {
+                "actions": [
+                    "create"
+                ],
+                "before": null,
+                "after": {
+                    "allocated_storage": 100,
+                    "engine": "postgres",
+                    "instance_class": "db.r5.large",
+                    "multi_az": true,
+                    "storage_encrypted": true,
+                    "backup_retention_period": 14
+                }
+            }
+        },
+        {
+            "address": "aws_sqs_queue.orders",
+            "mode": "managed",
+            "type": "aws_sqs_queue",
+            "name": "orders",
+            "change": {
+                "actions": [
+                    "create"
+                ],
+                "before": null,
+                "after": {
+                    "name": "orders-queue"
+                }
+            }
+        },
+        {
+            "address": "aws_lambda_function.old_function",
+            "mode": "managed",
+            "type": "aws_lambda_function",
+            "name": "old_function",
+            "change": {
+                "actions": [
+                    "delete"
+                ],
+                "before": {
+                    "function_name": "old-function"
+                },
+                "after": null
+            }
+        }
+    ]
+}

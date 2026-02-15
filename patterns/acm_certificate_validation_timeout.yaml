@@ -1,0 +1,13 @@
+pattern: acm_certificate_validation_timeout
+failure_class: operational_failure
+conditions:
+  - dns_validation
+  - cname_missing
+  - 72_hour_expiry
+  - certificate_pending
+description: ACM Certificate stays in 'Pending Validation' state because the required CNAME records were not added to DNS in time.
+mitigations:
+  - route53_auto_validation
+  - email_validation_fallback
+  - validation_record_monitoring
+  - cloudformation_custom_resource

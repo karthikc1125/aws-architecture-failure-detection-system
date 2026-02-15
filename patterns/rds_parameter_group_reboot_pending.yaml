@@ -1,0 +1,13 @@
+pattern: rds_parameter_group_reboot_pending
+failure_class: configuration_drift
+conditions:
+  - static_parameter_change
+  - missing_reboot
+  - database_restart_pending
+  - performance_tuning
+description: Critical database parameter changes (e.g., shared_buffers) are not applied because the instance was not rebooted.
+mitigations:
+  - maintenance_window_reboot
+  - apply_immediately_flag
+  - config_drift_monitor
+  - dynamic_parameter_preference

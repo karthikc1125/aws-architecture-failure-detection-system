@@ -1,0 +1,10 @@
+pattern: rds_cpu_high_utilization
+failure_class: performance_degradation
+conditions:
+- inefficient_queries
+- missing_index
+description: CPU stays at 100%, causing query timeouts.
+mitigations:
+- performance_insights
+- read_replica
+- instance_resize

@@ -1,0 +1,238 @@
+
+--- 🧪 TESTING ARCHITECTURE GRAPH ANALYSIS ---
+Input Scenario:
+
+    We have an OrderService Lambda that sends messages to an SQS OrderQueue.
+    The OrderQueue triggers an OrderProcessor Lambda.
+    The OrderProcessor Lambda updates the status by calling the OrderService Lambda again.
+    
+    Also, the OrderService, PaymentService, and ShippingService all query the same InventoryLambda.
+    
+    Finally, all services write data to a single RDS MySQL database running in us-east-1a.
+    
+
+[FailurePredictionAgent] Analyzing project: 
+    We have an OrderService Lambda that sends mes...
+Retrieving context for: 
+    We have an OrderService Lambda that sends messages to an SQS OrderQueue.
+    The OrderQueue triggers an OrderProcessor Lambda.
+    The OrderProcessor Lambda updates the status by calling the OrderService Lambda again.
+    
+    Also, the OrderService, PaymentService, and ShippingService all query the same InventoryLambda.
+    
+    Finally, all services write data to a single RDS MySQL database running in us-east-1a.
+    
+Optimized query: 
+    We have an OrderService Lambda that sends messages to an SQS OrderQueue.
+    The OrderQueue triggers an OrderProcessor Lambda.
+    The OrderProcessor Lambda updates the status by calling the OrderService Lambda again.
+    
+    Also, the OrderService, PaymentService, and ShippingService all query the same InventoryLambda.
+    
+    Finally, all services write data to a single RDS MySQL database running in us-east-1a.
+     failure outage
+Loading embedding model: all-MiniLM-L6-v2...
+Found 3 relevant memory items.
+[FailurePredictionAgent] Building Architecture Graph...
+[FailurePredictionAgent] Graph Stats: 6 Nodes, 6 Edges.
+  - Node: lambda_order
+  - Node: sqs_messages
+  - Node: sqs_order
+  - Node: lambda_orderprocessor
+  - Node: lambda_inventory
+  - Node: rds_mysql
+  - Edge: lambda_order -> sqs_messages (unknown)
+  - Edge: sqs_messages -> sqs_order (unknown)
+  - Edge: sqs_order -> sqs_order (unknown)
+  - Edge: sqs_order -> lambda_orderprocessor (trigger)
+  - Edge: lambda_orderprocessor -> lambda_order (unknown)
+  - Edge: rds_mysql -> rds_mysql (unknown)
+
+
+--- 🔍 ANALYSIS RESULTS ---
+
+FAILURE #1: Cyclic Dependency
+Class: Architectural Flaw
+Risk Likelihood: 95%
+Description: Infinite loop detected in service structure: Cycle Detected: sqs_order
+Mitigation: Decouple services using SQS/SNS or Step Functions.
+
+FAILURE #2: Cyclic Dependency
+Class: Architectural Flaw
+Risk Likelihood: 95%
+Description: Infinite loop detected in service structure: Cycle Detected: lambda_order -> sqs_messages -> sqs_order -> lambda_orderprocessor
+Mitigation: Decouple services using SQS/SNS or Step Functions.
+
+FAILURE #3: Cyclic Dependency
+Class: Architectural Flaw
+Risk Likelihood: 95%
+Description: Infinite loop detected in service structure: Cycle Detected: rds_mysql
+Mitigation: Decouple services using SQS/SNS or Step Functions.
+
+FAILURE #4: kinesis_iterator_age_lag
+Class: processing_latency
+Risk Likelihood: 50%
+Description: Potential for kinesis_iterator_age_lag detected. Conditions identified in text.
+Mitigation: increase_shard_count, parallel_lambda_consumers, bisect_batch_on_function_error, enhance_fan_out
+
+FAILURE #5: az_spof
+Class: availability_risk
+Risk Likelihood: 85%
+Description: Potential for az_spof detected. Conditions identified in text.
+Mitigation: multi_az_deployment, auto_scaling_group, rds_multi_az, load_balancer
+
+FAILURE #6: control_plane_failure
+Class: dependency_failure
+Risk Likelihood: 50%
+Description: Potential for control_plane_failure detected. Conditions identified in text.
+Mitigation: cache_control_plane_data, static_configuration, remove_runtime_dependency
+
+FAILURE #7: macie_sensitive_data_discovery_cost
+Class: cost_anomaly
+Risk Likelihood: 50%
+Description: Potential for macie_sensitive_data_discovery_cost detected. Conditions identified in text.
+Mitigation: discovery_scope_definition, sampling_percentage, object_criteria_filtering, cost_allowance_limit
+
+FAILURE #8: circular_dependency
+Class: architectural_deadlock
+Risk Likelihood: 50%
+Description: Potential for circular_dependency detected. Conditions identified in text.
+Mitigation: event_driven_architecture, dependency_inversion, combine_services, async_messaging
+
+FAILURE #9: rds_backup_window_contention
+Class: performance_degradation
+Risk Likelihood: 50%
+Description: Potential for rds_backup_window_contention detected. Conditions identified in text.
+Mitigation: backup_window_tuning, read_replica_offload
+
+FAILURE #10: apigateway_integration_timeout
+Class: integration_failure
+Risk Likelihood: 50%
+Description: Potential for apigateway_integration_timeout detected. Conditions identified in text.
+Mitigation: asynchronous_invocation, step_functions_integration, sqs_buffer_pattern, client_polling_architecture
+
+FAILURE #11: greengrass_deployment_fail
+Class: edge_computing_error
+Risk Likelihood: 50%
+Description: Potential for greengrass_deployment_fail detected. Conditions identified in text.
+Mitigation: deployment_logs, component_version_check
+
+FAILURE #12: kinesis_provisioned_throughput
+Class: performance_degradation
+Risk Likelihood: 50%
+Description: Potential for kinesis_provisioned_throughput detected. Conditions identified in text.
+Mitigation: enhanced_fan_out, random_partition_key, auto_scaling_kinesis, sqs_buffer
+
+FAILURE #13: regional_spof
+Class: single_point_of_failure
+Risk Likelihood: 60%
+Description: Potential for regional_spof detected. Conditions identified in text.
+Mitigation: multi_region_active_active, multi_region_active_passive, global_traffic_manager
+
+FAILURE #14: mq_broker_memory_full
+Class: resource_exhaustion
+Risk Likelihood: 50%
+Description: Potential for mq_broker_memory_full detected. Conditions identified in text.
+Mitigation: instance_resize, consumer_scaling
+
+FAILURE #15: sqs_batch_failure_partial
+Class: operational_failure
+Risk Likelihood: 50%
+Description: Potential for sqs_batch_failure_partial detected. Conditions identified in text.
+Mitigation: report_batch_item_failures, idempotency_implementation, dead_letter_queue_redrive, smaller_batch_size
+
+FAILURE #16: kinesis_shard_hotspot
+Class: throttling
+Risk Likelihood: 50%
+Description: Potential for kinesis_shard_hotspot detected. Conditions identified in text.
+Mitigation: high_cardinality_partition_key, random_uuid_suffix, kinesis_scaling_utility, dynamic_partitioning
+
+FAILURE #17: lambda_vpc_enso_timeout
+Class: network_failure
+Risk Likelihood: 50%
+Description: Potential for lambda_vpc_enso_timeout detected. Conditions identified in text.
+Mitigation: vpc_endpoint, subnet_sizing
+
+FAILURE #18: secrets_manager_rotation_failure
+Class: security_risk
+Risk Likelihood: 50%
+Description: Potential for secrets_manager_rotation_failure detected. Conditions identified in text.
+Mitigation: rotation_lambda_debug, vpc_endpoint_check
+
+FAILURE #19: chatty_microservices
+Class: latency_amplification
+Risk Likelihood: 50%
+Description: Potential for chatty_microservices detected. Conditions identified in text.
+Mitigation: batch_api_endpoints, graphql_federation, data_replication, caching_layer
+
+FAILURE #20: kms_throttling_exception
+Class: throttling
+Risk Likelihood: 50%
+Description: Potential for kms_throttling_exception detected. Conditions identified in text.
+Mitigation: data_key_caching, quota_increase
+
+FAILURE #21: efs_file_limit_exceeded
+Class: resource_exhaustion
+Risk Likelihood: 50%
+Description: Potential for efs_file_limit_exceeded detected. Conditions identified in text.
+Mitigation: directory_sharding, fsx_lustre
+
+FAILURE #22: iot_certificate_inactive
+Class: device_connectivity
+Risk Likelihood: 50%
+Description: Potential for iot_certificate_inactive detected. Conditions identified in text.
+Mitigation: certificate_activation, policy_attachment
+
+FAILURE #23: iot_shadow_update_conflict
+Class: state_inconsistency
+Risk Likelihood: 75%
+Description: Potential for iot_shadow_update_conflict detected. Conditions identified in text.
+Mitigation: optimistic_locking_version, limit_update_rate, delta_topic_subscription, last_write_wins_logic
+
+FAILURE #24: s3_race_condition
+Class: data_integrity_loss
+Risk Likelihood: 60%
+Description: Potential for s3_race_condition detected. Conditions identified in text.
+Mitigation: s3_versioning, dynamo_db_locking, optimistic_concurrency, unique_prefixes
+
+FAILURE #25: cron_job_scalability
+Class: scalability_limit
+Risk Likelihood: 75%
+Description: Potential for cron_job_scalability detected. Conditions identified in text.
+Mitigation: step_functions, eventbridge_scheduler, distributed_map, fan_out_pattern
+
+FAILURE #26: personalize_campaign_failure
+Class: ml_ops_error
+Risk Likelihood: 50%
+Description: Potential for personalize_campaign_failure detected. Conditions identified in text.
+Mitigation: dataset_inspection, recipe_change
+
+FAILURE #27: codedeploy_agent_not_found
+Class: deployment_failure
+Risk Likelihood: 50%
+Description: Potential for codedeploy_agent_not_found detected. Conditions identified in text.
+Mitigation: agent_restart, user_data_install
+
+FAILURE #28: ec2_status_check_failed
+Class: availability_failure
+Risk Likelihood: 66%
+Description: Potential for ec2_status_check_failed detected. Conditions identified in text.
+Mitigation: auto_recovery, cloudwatch_alarm_reboot
+
+FAILURE #29: batch_job_stuck_runnable
+Class: resource_exhaustion
+Risk Likelihood: 50%
+Description: Potential for batch_job_stuck_runnable detected. Conditions identified in text.
+Mitigation: compute_environment_troubleshooting, job_queue_priority
+
+FAILURE #30: dynamodb_hot_key_throttling
+Class: performance_degradation
+Risk Likelihood: 50%
+Description: Potential for dynamodb_hot_key_throttling detected. Conditions identified in text.
+Mitigation: random_suffix_sharding, write_sharding_compound_key, adaptive_capacity_on_demand, dax_write_through
+
+FAILURE #31: lightsail_quota_exceeded
+Class: limit_failure
+Risk Likelihood: 50%
+Description: Potential for lightsail_quota_exceeded detected. Conditions identified in text.
+Mitigation: quota_limit_check, region_check

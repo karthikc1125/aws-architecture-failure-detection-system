@@ -1,0 +1,13 @@
+pattern: sqs_fifo_deduplication_collision
+failure_class: message_loss
+conditions:
+  - content_based_deduplication
+  - duplicate_message_body
+  - 5_minute_window
+  - exact_duplicate_payload
+description: Valid but identical messages sent within a 5-minute window are dropped by FIFO queue deduplication logic.
+mitigations:
+  - unique_deduplication_id
+  - random_salt_in_body
+  - message_group_id_variation
+  - standard_queue_migration

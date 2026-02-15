@@ -1,0 +1,13 @@
+pattern: cron_job_scalability
+failure_class: scalability_limit
+conditions:
+  - single_instance_cron
+  - batch_processing
+  - time_based_trigger
+  - long_running_task
+description: Relying on a single server to run a cron job that processes an ever-growing dataset. It will eventually timeout.
+mitigations:
+  - step_functions
+  - eventbridge_scheduler
+  - distributed_map
+  - fan_out_pattern

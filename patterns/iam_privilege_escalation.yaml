@@ -1,0 +1,13 @@
+pattern: iam_privilege_escalation
+failure_class: security_breach
+conditions:
+  - user_managed_policy
+  - iam_pass_role
+  - wildcard_resource
+  - untrusted_principal
+description: An overly permissive IAM Policy allows a user/role to attach FullAccess policies or assume roles, leading to full takeover.
+mitigations:
+  - least_privilege_model
+  - access_analyzer
+  - permission_boundary
+  - scp_guardrails

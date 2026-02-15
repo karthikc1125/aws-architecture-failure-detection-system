@@ -1,0 +1,5 @@
+{
+    "lesson_id": "control-plane-dependency",
+    "topic": "Control Plane Dependency",
+    "rule": "Avoid critical path dependencies on control plane APIs."
+}

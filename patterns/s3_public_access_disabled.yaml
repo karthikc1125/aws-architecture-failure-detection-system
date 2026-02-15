@@ -1,0 +1,13 @@
+pattern: s3_public_access_disabled
+failure_class: data_leak
+conditions:
+  - public_read_acl
+  - website_hosting_misconfig
+  - missing_block_public_access
+  - log_storage_exposed
+description: "An S3 bucket is accidentally configured with 'AllUsers: Read', exposing sensitive data to the internet."
+mitigations:
+  - block_public_access_setting
+  - bucket_policy_deny_public
+  - macie_classification
+  - cloudfront_oac

@@ -1,0 +1,13 @@
+pattern: athena_query_timeout
+failure_class: timeout_failure
+conditions:
+  - complex_join_operation
+  - large_scan_volume
+  - 30_minute_limit
+  - dml_query_error
+description: Athena queries exceeding the 30-minute execution limit are terminated abruptly.
+mitigations:
+  - query_partitioning
+  - ctas_creation
+  - limit_clause
+  - dedicated_workgroups

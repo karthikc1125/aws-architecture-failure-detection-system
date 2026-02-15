@@ -1,0 +1,13 @@
+pattern: apigateway_integration_timeout
+failure_class: integration_failure
+conditions:
+  - synchronous_lambda_invocation
+  - slow_backend_process
+  - 29_second_limit
+  - http_504_gateway_timeout
+description: API Gateway abruptly terminates connections after 29 seconds, causing 504 errors for long-running Lambda or HTTP backends.
+mitigations:
+  - asynchronous_invocation
+  - step_functions_integration
+  - sqs_buffer_pattern
+  - client_polling_architecture

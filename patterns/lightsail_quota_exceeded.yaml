@@ -1,0 +1,9 @@
+pattern: lightsail_quota_exceeded
+failure_class: limit_failure
+conditions:
+- instance_count
+- static_ip
+description: Cannot create resource.
+mitigations:
+- quota_limit_check
+- region_check

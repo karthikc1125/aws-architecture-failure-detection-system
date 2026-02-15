@@ -1,0 +1,9 @@
+pattern: datasync_agent_connectivity
+failure_class: migration_failure
+conditions:
+- firewall_port
+- activation_key
+description: Agent cannot connect to AWS.
+mitigations:
+- network_check
+- agent_restart

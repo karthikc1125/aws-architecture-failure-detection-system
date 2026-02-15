@@ -1,0 +1,13 @@
+pattern: transit_gateway_vpc_attachment_limit
+failure_class: scalability_limit
+conditions:
+  - large_scale_network
+  - 5000_attachment_limit
+  - peering_connection
+  - route_table_propagation
+description: Network expansion halted due to hitting the limit of TGW attachments or route table entries.
+mitigations:
+  - multiple_transit_gateways
+  - route_summarization
+  - direct_vpc_peering_offload
+  - cloud_wan_migration

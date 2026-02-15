@@ -1,0 +1,9 @@
+pattern: ebs_volume_stuck_optimizing
+failure_class: operational_delay
+conditions:
+- volume_modification
+- insufficient_io_credit
+description: Volume modification takes hours, blocking further changes.
+mitigations:
+- snapshot_restore
+- wait_for_optimization

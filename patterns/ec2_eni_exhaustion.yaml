@@ -1,0 +1,13 @@
+pattern: ec2_eni_exhaustion
+failure_class: network_failure
+conditions:
+  - high_density_pods
+  - multiple_security_groups
+  - t3_instance_family
+  - interface_attachment_limit
+description: Instance cannot attach more Network Interfaces (ENIs) for containers or secondary IPs due to instance type limits.
+mitigations:
+  - instance_type_upgrade
+  - ip_prefix_delegation
+  - trunking_eni
+  - reduce_security_groups

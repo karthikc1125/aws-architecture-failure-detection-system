@@ -1,0 +1,9 @@
+pattern: lambda_vpc_enso_timeout
+failure_class: network_failure
+conditions:
+- eni_creation_latency
+- subnet_ip_exhaustion
+description: Function times out waiting for ENI attachment in VPC.
+mitigations:
+- vpc_endpoint
+- subnet_sizing

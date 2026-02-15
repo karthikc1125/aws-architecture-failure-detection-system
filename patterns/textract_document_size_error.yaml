@@ -1,0 +1,9 @@
+pattern: textract_document_size_error
+failure_class: ai_service_error
+conditions:
+- file_too_large
+- pixel_limit
+description: Document analysis failure.
+mitigations:
+- synchronous_to_async
+- image_resize

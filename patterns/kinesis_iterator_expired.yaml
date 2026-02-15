@@ -1,0 +1,9 @@
+pattern: kinesis_iterator_expired
+failure_class: data_loss
+conditions:
+- slow_processing
+- retention_period
+description: Consumer falls behind retention window (24h default).
+mitigations:
+- increase_retention
+- parallel_processing

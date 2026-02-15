@@ -1,0 +1,9 @@
+pattern: cloudformation_stack_drift
+failure_class: drift_detected
+conditions:
+- manual_change
+- resource_deleted
+description: Stack resources modified outside CloudFormation.
+mitigations:
+- stack_update
+- drift_detection

@@ -1,0 +1,13 @@
+pattern: apigateway_authorizer_latency
+failure_class: latency_latency
+conditions:
+  - lambda_authorizer
+  - cold_start
+  - uncached_policy
+  - high_auth_overhead
+description: Custom Lambda Authorizers add significant latency to every API request due to cold starts or lack of policy caching.
+mitigations:
+  - authorizer_result_caching
+  - provisioned_concurrency
+  - jwt_validation_logic
+  - cognito_user_pool_authorizer

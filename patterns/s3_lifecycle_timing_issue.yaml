@@ -1,0 +1,11 @@
+pattern: s3_lifecycle_timing_issue
+failure_class: data_loss
+conditions:
+- lifecycle_rule_too_aggressive
+- object_deletion_before_processing
+description: Objects are deleted or transitioned to Glacier before they are processed
+  by analytics jobs.
+mitigations:
+- s3_lifecycle_delay
+- s3_object_tagging
+- eventbridge_trigger

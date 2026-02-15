@@ -1,0 +1,9 @@
+pattern: budget_action_failure
+failure_class: governance_failure
+conditions:
+- iam_role_permission
+- ssm_document_error
+description: Budget action failed to stop instances.
+mitigations:
+- service_role_check
+- ssm_automation_test

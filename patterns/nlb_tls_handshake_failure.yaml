@@ -1,0 +1,9 @@
+pattern: nlb_tls_handshake_failure
+failure_class: connectivity_failure
+conditions:
+- cipher_suite_mismatch
+- certificate_invalid
+description: Client cannot negotiate TLS with NLB.
+mitigations:
+- security_policy_update
+- acm_validation

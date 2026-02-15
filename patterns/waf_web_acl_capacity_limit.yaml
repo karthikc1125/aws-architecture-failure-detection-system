@@ -1,0 +1,13 @@
+pattern: waf_web_acl_capacity_limit
+failure_class: security_configuration_failure
+conditions:
+  - complex_rule_groups
+  - managed_rules
+  - wcu_exhaustion
+  - 1500_wcu_limit
+description: Unable to add new security rules because the Web ACL exceeds the default 1,500 WCU (Web ACL Capacity Units) limit.
+mitigations:
+  - consolidate_rules
+  - rule_group_optimization
+  - quota_increase_request
+  - split_web_acl

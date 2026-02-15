@@ -1,0 +1,13 @@
+pattern: noisy_neighbor
+failure_class: resource_contention
+conditions:
+  - multitenant_architecture
+  - shared_resource
+  - lack_of_isolation
+  - unpredictable_load
+description: One tenant consumes excessive resources (CPU/IOPS/Throughput) in a shared environment, degrading performance for others.
+mitigations:
+  - shuffle_sharding
+  - tenant_isolation
+  - rate_limiting_per_tenant
+  - dedicated_instances

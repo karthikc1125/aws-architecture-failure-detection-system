@@ -1,0 +1,13 @@
+pattern: glue_job_oom
+failure_class: memory_exhaustion
+conditions:
+  - large_dataset_skew
+  - insufficient_dpu
+  - full_scan_partition
+  - spilling_to_disk
+description: Spark job executor runs out of memory (OOM) when shuffling large skewed datasets, failing the ETL pipeline.
+mitigations:
+  - glue_auto_scaling
+  - optimize_partitioning
+  - use_glue_worker_g2x
+  - push_down_predicate

@@ -1,0 +1,9 @@
+pattern: eks_node_group_upgrade_failure
+failure_class: deployment_failure
+conditions:
+- pod_eviction_timeout
+- pdb_blocking
+description: Upgrade stalls because pods cannot be evicted.
+mitigations:
+- pdb_budget_review
+- force_eviction_flag

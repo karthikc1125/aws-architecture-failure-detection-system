@@ -1,0 +1,9 @@
+pattern: dynamodb_lsi_size_limit
+failure_class: schema_error
+conditions:
+- item_collection_size_limit
+- 10gb_limit
+description: Writes fail because Local Secondary Index collection exceeds 10GB limit.
+mitigations:
+- gsi_substitution
+- schema_redesign

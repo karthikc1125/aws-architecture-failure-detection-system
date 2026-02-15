@@ -1,0 +1,13 @@
+pattern: cloudfront_invalidation_quota
+failure_class: operational_failure
+conditions:
+  - heavy_invalidation_workflow
+  - wildcard_invalidation
+  - 3000_path_limit
+  - deployment_failure
+description: CI/CD pipelines fail because they exceed the limit of 3,000 concurrent invalidation paths.
+mitigations:
+  - wildcard_invalidation_strategy
+  - versioned_file_names
+  - cache_control_headers
+  - reduce_invalidation_frequency

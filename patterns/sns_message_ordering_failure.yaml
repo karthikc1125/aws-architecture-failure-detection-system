@@ -1,0 +1,13 @@
+pattern: sns_message_ordering_failure
+failure_class: logic_error
+conditions:
+  - sequential_events
+  - standard_topic
+  - multiple_publishers
+  - race_condition
+description: Events published to a Standard SNS Topic arrive out of order, breaking stateful consumer logic.
+mitigations:
+  - sns_fifo_topic
+  - sqs_fifo_subscription
+  - consumer_sequencing_logic
+  - timestamp_ordering

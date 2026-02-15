@@ -1,0 +1,13 @@
+pattern: unrestricted_egress
+failure_class: security_exfiltration
+conditions:
+  - security_group
+  - outbound_0.0.0.0/0
+  - nat_gateway_public
+  - sensitive_data
+description: Resources allowed to initiate connections to any IP on the internet, increasing the risk of data exfiltration or botnet participation.
+mitigations:
+  - egress_filtering
+  - proxy_server
+  - vpc_endpoints
+  - network_firewall

@@ -1,0 +1,13 @@
+pattern: fsx_backup_window_clash
+failure_class: availability_degradation
+conditions:
+  - automated_backup
+  - peak_hours_operation
+  - io_freeze
+  - performance_impact
+description: FSx automated backups cause I/O suspension or latency during business hours if the window is misconfigured.
+mitigations:
+  - off_peak_backup_window
+  - multi_az_deployment
+  - backup_copy_offload
+  - latency_monitoring

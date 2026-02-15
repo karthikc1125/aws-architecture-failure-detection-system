@@ -1,0 +1,9 @@
+pattern: sagemaker_endpoint_latency
+failure_class: ai_performance
+conditions:
+- instance_overload
+- model_complexity
+description: Inference response time high.
+mitigations:
+- autoscaling_policy
+- instance_type_upgrade

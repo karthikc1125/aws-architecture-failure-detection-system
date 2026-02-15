@@ -1,0 +1,9 @@
+pattern: alb_504_gateway_timeout
+failure_class: performance_degradation
+conditions:
+- backend_latency
+- idle_timeout
+description: Load balancer times out waiting for target response.
+mitigations:
+- increase_idle_timeout
+- optimize_backend

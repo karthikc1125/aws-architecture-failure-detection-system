@@ -1,0 +1,13 @@
+pattern: appsync_query_depth
+failure_class: api_dos
+conditions:
+  - nested_graphql_resolver
+  - missing_depth_monitoring
+  - public_api_endpoint
+  - large_n_plus_one
+description: Attackers or complex clients execute deeply nested GraphQL queries, causing AppSync resolver timeouts or backend overload.
+mitigations:
+  - max_query_depth_limit
+  - appsync_cache
+  - resolver_batching
+  - rate_limiting

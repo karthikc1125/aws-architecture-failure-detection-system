@@ -1,0 +1,13 @@
+pattern: nat_gateway_port_exhaustion
+failure_class: network_failure
+conditions:
+  - high_concurrent_connections
+  - single_destination_ip
+  - connection_timeout
+  - 55000_port_limit
+description: High volume of outbound connections to a single destination IP exhausts the NAT Gateway's 55,000 ephemeral ports.
+mitigations:
+  - multiple_nat_gateways
+  - vpc_endpoint_usage
+  - connection_pooling
+  - destination_ip_distribution

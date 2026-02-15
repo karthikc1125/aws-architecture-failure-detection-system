@@ -1,0 +1,13 @@
+pattern: poison_pill
+failure_class: consumer_crash
+conditions:
+  - message_queue
+  - malformed_payload
+  - infinite_retry_loop
+  - lack_of_dlq
+description: A consumer crashes processing a specific message, which is then re-queued and crashes other consumers repeatedly.
+mitigations:
+  - dead_letter_queue
+  - max_receive_count
+  - schema_validation
+  - exception_handling

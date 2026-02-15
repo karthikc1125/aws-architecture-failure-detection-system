@@ -1,0 +1,9 @@
+pattern: iot_rule_sql_error
+failure_class: data_routing_error
+conditions:
+- syntax_error
+- attribute_missing
+description: IoT Rule engine fails to route message.
+mitigations:
+- sql_version_check
+- error_action_log

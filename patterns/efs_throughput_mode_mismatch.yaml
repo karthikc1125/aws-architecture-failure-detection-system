@@ -1,0 +1,13 @@
+pattern: efs_throughput_mode_mismatch
+failure_class: performance_degradation
+conditions:
+  - bursting_throughput_mode
+  - high_sustained_io
+  - baseline_throughput_limit
+  - credit_exhaustion
+description: Using Bursting Throughput mode for sustained high-IO workloads leads to performance throttling once credits are gone.
+mitigations:
+  - provisioned_throughput_mode
+  - elastic_throughput_mode
+  - metrics_monitoring
+  - workload_profiling

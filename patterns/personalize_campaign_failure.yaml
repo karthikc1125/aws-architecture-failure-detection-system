@@ -1,0 +1,9 @@
+pattern: personalize_campaign_failure
+failure_class: ml_ops_error
+conditions:
+- data_quality
+- training_error
+description: Recommendation campaign error.
+mitigations:
+- dataset_inspection
+- recipe_change

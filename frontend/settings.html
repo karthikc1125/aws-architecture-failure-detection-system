@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | SafeCloud</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            🛡️ <span>SafeCloud</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/analyze">Analyze</a></li>
+                <li><a href="/methodology">Methodology</a></li>
+                <li><a href="/settings" class="active">⚙️ Settings</a></li>
+                <li class="info-dropdown">
+                    <span class="info-icon">ℹ️</span>
+                    <div class="info-content">
+                        <a href="mailto:contact@safecloud.ai" class="info-link">
+                            📧 Email
+                        </a>
+                        <a href="https://github.com/safecloud/aws-failure-detector" target="_blank" class="info-link">
+                            🐱 GitHub
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section style="max-width: 800px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">AI Configuration</h1>
+                <p style="color: var(--text-secondary);">Customize the intelligence engine behind SafeCloud.</p>
+            </div>
+
+            <div class="card" style="padding: 2rem; border-top: 4px solid var(--accent-purple);">
+
+                <!-- Provider Section -->
+                <div class="input-group" style="margin-bottom: 2rem;">
+                    <label style="display: block; margin-bottom: 0.8rem; font-weight: 600; font-size: 1.1rem;">1. AI
+                        Provider</label>
+                    <select id="settingProvider" onchange="toggleCustom('settingProvider', 'customProviderGroup')"
+                        style="width: 100%; padding: 1rem; border-radius: 8px; background: #0f172a; border: 1px solid #334155; color: white; font-family: var(--font-family); font-size: 1rem;">
+                        <option value="openrouter">OpenRouter (Recommended)</option>
+                        <option value="openai">OpenAI (Direct API)</option>
+                        <option value="anthropic">Anthropic (Direct API)</option>
+                        <option value="groq">Groq (Direct)</option>
+                        <option value="simulation">Offline Simulation</option>
+                        <option value="other">Other (Custom)</option>
+                    </select>
+
+                    <!-- Hidden Custom Input -->
+                    <div id="customProviderGroup" style="display: none; margin-top: 1rem;">
+                        <input type="text" id="customProvider"
+                            placeholder="Enter custom provider name (e.g. azure-openai)"
+                            style="width: 100%; padding: 1rem; background: #1e293b; border: 1px solid #475569; color: white; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <!-- API Key Section -->
+                <div class="input-group" style="margin-bottom: 2rem;">
+                    <label style="display: block; margin-bottom: 0.8rem; font-weight: 600; font-size: 1.1rem;">2. API
+                        Key</label>
+                    <div style="position: relative;">
+                        <input type="password" id="settingApiKey" placeholder="sk-..."
+                            style="width: 100%; padding: 1rem; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px; font-family: monospace;">
+                        <button onclick="toggleKeyVisibility()"
+                            style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748b; cursor: pointer;">👁️</button>
+                    </div>
+                </div>
+
+                <!-- Model Section -->
+                <div class="input-group" style="margin-bottom: 2rem;">
+                    <label style="display: block; margin-bottom: 0.8rem; font-weight: 600; font-size: 1.1rem;">3. Model
+                        Selection</label>
+                    <select id="settingModel" onchange="toggleCustom('settingModel', 'customModelGroup')"
+                        style="width: 100%; padding: 1rem; border-radius: 8px; background: #0f172a; border: 1px solid #334155; color: white; font-family: var(--font-family); font-size: 1rem;">
+                        <optgroup label="Google">
+                            <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash (Free)</option>
+                            <option value="google/gemini-pro-1.5">Gemini 1.5 Pro</option>
+                        </optgroup>
+                        <optgroup label="Meta">
+                            <option value="meta-llama/llama-3.2-3b-instruct:free">Llama 3.2 3B (Free)</option>
+                            <option value="meta-llama/llama-3-70b-instruct">Llama 3 70B</option>
+                            <option value="meta-llama/llama-3.1-405b-instruct">Llama 3.1 405B</option>
+                        </optgroup>
+                        <optgroup label="OpenAI">
+                            <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
+                            <option value="openai/gpt-4o">GPT-4o</option>
+                            <option value="openai/o1-preview">OpenAI o1</option>
+                        </optgroup>
+                        <optgroup label="Anthropic">
+                            <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+                            <option value="anthropic/claude-3-opus">Claude 3 Opus</option>
+                        </optgroup>
+                        <optgroup label="Groq">
+                            <option value="groq/llama-3-8b-8192">Groq Llama 3 8B</option>
+                            <option value="groq/mixtral-8x7b-32768">Groq Mixtral</option>
+                        </optgroup>
+                        <optgroup label="Custom">
+                            <option value="other">Other (Enter Manually)</option>
+                        </optgroup>
+                    </select>
+
+                    <!-- Hidden Custom Input -->
+                    <div id="customModelGroup" style="display: none; margin-top: 1rem;">
+                        <input type="text" id="customModel"
+                            placeholder="Enter custom model ID (e.g. nvidia/nemotron-4-340b)"
+                            style="width: 100%; padding: 1rem; background: #1e293b; border: 1px solid #475569; color: white; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div
+                    style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 3rem; border-top: 1px solid #334155; padding-top: 2rem;">
+                    <button onclick="resetDefaults()" class="btn-secondary" style="padding: 1rem 2rem;">Restore
+                        Defaults</button>
+                    <button onclick="saveFullSettings()" class="btn" style="padding: 1rem 3rem;">Save
+                        Configuration</button>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div style="margin-bottom: 0.5rem;">&copy; 2026 SafeCloud AI. All Rights Reserved.</div>
+        <div>
+            <a href="mailto:contact@safecloud.ai" style="color: var(--accent-green); font-weight: 600;">Contact
+                Support</a>
+        </div>
+    </footer>
+
+    <script src="/static/app.js"></script>
+    <script>
+        // Use a set of known values to determine if 'Other' should be selected automatically
+        const knownProviders = new Set(['openrouter', 'openai', 'anthropic', 'groq', 'simulation']);
+        const knownModels = new Set([
+            'google/gemini-2.0-flash-exp:free', 'google/gemini-pro-1.5',
+            'meta-llama/llama-3.2-3b-instruct:free', 'meta-llama/llama-3-70b-instruct', 'meta-llama/llama-3.1-405b-instruct',
+            'openai/gpt-4o-mini', 'openai/gpt-4o', 'openai/o1-preview',
+            'anthropic/claude-3.5-sonnet', 'anthropic/claude-3-opus',
+            'groq/llama-3-8b-8192', 'groq/mixtral-8x7b-32768'
+        ]);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load Provider
+            const savedProvider = localStorage.getItem('safecloud_provider') || 'openrouter';
+            const providerSelect = document.getElementById('settingProvider');
+            if (knownProviders.has(savedProvider)) {
+                providerSelect.value = savedProvider;
+            } else {
+                providerSelect.value = 'other';
+                document.getElementById('customProviderGroup').style.display = 'block';
+                document.getElementById('customProvider').value = savedProvider;
+            }
+
+            // Load API Key
+            document.getElementById('settingApiKey').value = localStorage.getItem('safecloud_api_key') || '';
+
+            // Load Model
+            const savedModel = localStorage.getItem('safecloud_model') || 'google/gemini-2.0-flash-exp:free';
+            const modelSelect = document.getElementById('settingModel');
+
+            // Check if saved model in select options (checking Set might miss some if list is long, better to check options)
+            let modelExists = false;
+            for (let opt of modelSelect.options) {
+                if (opt.value === savedModel) {
+                    modelExists = true;
+                    break;
+                }
+            }
+
+            if (modelExists) {
+                modelSelect.value = savedModel;
+            } else {
+                modelSelect.value = 'other';
+                document.getElementById('customModelGroup').style.display = 'block';
+                document.getElementById('customModel').value = savedModel;
+            }
+        });
+
+        function toggleCustom(selectId, groupId) {
+            const select = document.getElementById(selectId);
+            const group = document.getElementById(groupId);
+            if (select.value === 'other') {
+                group.style.display = 'block';
+            } else {
+                group.style.display = 'none';
+            }
+        }
+
+        function toggleKeyVisibility() {
+            const input = document.getElementById('settingApiKey');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function saveFullSettings() {
+            // Determine Provider
+            const providerSelect = document.getElementById('settingProvider');
+            let provider = providerSelect.value;
+            if (provider === 'other') {
+                provider = document.getElementById('customProvider').value;
+            }
+
+            // API Key
+            const key = document.getElementById('settingApiKey').value;
+
+            // Determine Model
+            const modelSelect = document.getElementById('settingModel');
+            let model = modelSelect.value;
+            if (model === 'other') {
+                model = document.getElementById('customModel').value;
+            }
+
+            // Validation
+            if (!provider) { alert("Please select or enter a provider."); return; }
+            if (!model) { alert("Please select or enter a model."); return; }
+
+            localStorage.setItem('safecloud_provider', provider);
+            localStorage.setItem('safecloud_api_key', key);
+            localStorage.setItem('safecloud_model', model);
+
+            const btn = document.querySelector('button.btn');
+            const originalText = btn.innerText;
+            btn.innerText = "✅ Saved!";
+            btn.style.background = "var(--accent-green)";
+
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = "";
+            }, 2000);
+        }
+
+        function resetDefaults() {
+            if (confirm("Reset all settings to default?")) {
+                localStorage.clear();
+                window.location.reload();
+            }
+        }
+    </script>
+</body>
+
+</html>

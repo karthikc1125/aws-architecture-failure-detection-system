@@ -1,0 +1,7 @@
+__pycache__/
+.env
+vector_store/index.faiss
+*.pyc
+.DS_Store
+venv
+.env

@@ -1,0 +1,9 @@
+pattern: elasticache_failover_latency
+failure_class: availability_failure
+conditions:
+- dns_ttl
+- client_reconnection
+description: Application sees errors during primary node failover.
+mitigations:
+- cluster_mode_enabled
+- client_library_retry

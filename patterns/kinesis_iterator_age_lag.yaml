@@ -1,0 +1,13 @@
+pattern: kinesis_iterator_age_lag
+failure_class: processing_latency
+conditions:
+  - slow_consumer_processing
+  - retry_storm
+  - iterator_age_milliseconds_spike
+  - 24_hour_data_expiry
+description: Consumer application cannot keep up with the stream ingestion rate, causing IteratorAge to grow until data expires (24h default).
+mitigations:
+  - increase_shard_count
+  - parallel_lambda_consumers
+  - bisect_batch_on_function_error
+  - enhance_fan_out

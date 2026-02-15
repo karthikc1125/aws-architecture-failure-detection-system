@@ -1,0 +1,13 @@
+pattern: vpc_peering_overlap
+failure_class: network_routing_conflict
+conditions:
+  - same_cidr_block
+  - legacy_vpc_design
+  - acquisition_merger
+  - default_vpc
+description: Two VPCs cannot be peered or connected via Transit Gateway due to overlapping IP CIDR ranges, breaking connectivity.
+mitigations:
+  - private_nat_gateway
+  - secondary_cidr_reallocation
+  - ipam_pool
+  - transit_gateway_route_table

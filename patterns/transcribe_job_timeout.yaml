@@ -1,0 +1,9 @@
+pattern: transcribe_job_timeout
+failure_class: ai_service_error
+conditions:
+- large_audio_file
+- unknown_format
+description: Transcription job stalls.
+mitigations:
+- media_conversion
+- chunking

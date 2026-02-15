@@ -1,0 +1,13 @@
+pattern: abandoned_elastic_ip
+failure_class: cost_anomaly
+conditions:
+  - unattached_eip
+  - large_dev_environment
+  - dynamic_provisioning
+  - instance_termination
+description: Elastic IPs (EIP) that are not attached to a running instance accrue hourly charges, creating "zombie costs".
+mitigations:
+  - aws_config_remediation
+  - lambda_reaper
+  - trusted_advisor_check
+  - cloudwatch_billing_alarm

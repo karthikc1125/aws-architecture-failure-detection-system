@@ -1,0 +1,13 @@
+pattern: cascading_failure
+failure_class: dependency_failure
+conditions:
+  - synchronous_chain
+  - direct_service_call
+  - no_circuit_breaker
+  - tight_coupling
+description: A failure in a downstream service causes the upstream service to fail due to resource exhaustion (threads/connections) while waiting.
+mitigations:
+  - circuit_breaker
+  - async_decoupling
+  - bulkhead_pattern
+  - timeout_tuning

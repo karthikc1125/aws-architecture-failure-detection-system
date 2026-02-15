@@ -1,0 +1,13 @@
+pattern: rds_storage_autoscaling_lag
+failure_class: availability_risk
+conditions:
+  - rapid_data_ingestion
+  - storage_full_state
+  - autoscaling_cooldown
+  - 6_hour_limit
+description: RDS Storage Autoscaling takes time to trigger (up to 6 hours between modifications), leading to STORAGE_FULL outages.
+mitigations:
+  - provisioned_iops_overhead
+  - cloudwatch_imminent_full_alarm
+  - manual_storage_increase
+  - data_archival

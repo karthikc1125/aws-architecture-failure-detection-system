@@ -1,0 +1,13 @@
+pattern: route53_resolver_query_logging_cost
+failure_class: cost_anomaly
+conditions:
+  - extensive_logging
+  - high_query_volume
+  - cloudwatch_ingestion
+  - unexpected_bill
+description: Enabling Route53 Resolver Query Logging for all VPC traffic generates massive CloudWatch ingestion costs.
+mitigations:
+  - specific_vpc_logging
+  - filter_query_types
+  - ephemeral_monitoring
+  - s3_low_cost_logging

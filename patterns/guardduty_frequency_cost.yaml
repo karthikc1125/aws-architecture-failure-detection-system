@@ -1,0 +1,13 @@
+pattern: guardduty_frequency_cost
+failure_class: cost_wastage
+conditions:
+  - s3_data_events
+  - cloudtrail_logging
+  - high_throughput_bucket
+  - security_monitoring_cost
+description: Enabling GuardDuty S3 Data Events on a high-traffic logging bucket generates massive analysis costs.
+mitigations:
+  - bucket_exclusion_filter
+  - selective_data_event_logging
+  - cost_estimation_usage
+  - security_hub_consolidation

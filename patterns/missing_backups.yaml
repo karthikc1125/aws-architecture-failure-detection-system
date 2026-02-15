@@ -1,0 +1,13 @@
+pattern: missing_backups
+failure_class: data_loss_risk
+conditions:
+  - rds_instance
+  - dynamodb_table
+  - no_backup_policy
+  - pitr_disabled
+description: Critical data stores lack automated backup policies or Point-in-Time Recovery (PITR), guaranteeing data loss during corruption events.
+mitigations:
+  - aws_backup
+  - rds_automated_backups
+  - dynamodb_pitr
+  - cross_region_backup

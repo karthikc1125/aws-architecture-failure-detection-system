@@ -1,0 +1,10 @@
+pattern: fsx_windows_ad_join_failure
+failure_class: connectivity_failure
+conditions:
+- dns_resolution_failure
+- security_group_block
+- ad_service_account_lock
+description: FSx fails to join Active Directory due to network or permission issues.
+mitigations:
+- dhcp_options_set
+- directory_service_debug

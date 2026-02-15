@@ -1,0 +1,9 @@
+pattern: eventbridge_cross_account_failure
+failure_class: permission_denied
+conditions:
+- resource_policy_mismatch
+- missing_bus_permission
+description: Events not flowing between accounts.
+mitigations:
+- bus_policy_update
+- rule_target_role

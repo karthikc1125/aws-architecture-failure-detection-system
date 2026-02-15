@@ -1,0 +1,13 @@
+pattern: rds_proxy_pinning
+failure_class: scalability_failure
+conditions:
+  - prepared_statements
+  - temporary_tables
+  - connection_multiplexing
+  - session_pinning
+description: Connection pooling effectiveness drops because transactions are pinned to a specific connection due to session state.
+mitigations:
+  - avoid_temporary_tables
+  - stateless_query_design
+  - rds_proxy_pinning_metrics
+  - session_level_pooling

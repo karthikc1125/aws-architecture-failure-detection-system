@@ -1,0 +1,13 @@
+pattern: ec2_burst_credit_exhaustion
+failure_class: performance_degradation
+conditions:
+  - t_series_instance
+  - sustained_cpu_spike
+  - unlimited_mode_disabled
+  - credit_balance_zero
+description: T3/T4g instances run out of CPU credits during sustained load, throttling performance to baseline (often 5-10%).
+mitigations:
+  - t3_unlimited_mode
+  - instance_resizing_m5
+  - cloudwatch_credit_alarm
+  - load_balancing_distribution

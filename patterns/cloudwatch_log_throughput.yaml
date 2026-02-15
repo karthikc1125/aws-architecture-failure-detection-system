@@ -1,0 +1,13 @@
+pattern: cloudwatch_log_throughput
+failure_class: observability_failure
+conditions:
+  - verbose_logging
+  - put_log_events_throttling
+  - synchronous_logging
+  - high_volume_ingress
+description: Agent/Lambda logging volume exceeds PutLogEvents quota (e.g., 2MB/s), causing log loss or application backpressure.
+mitigations:
+  - kinesis_firehose
+  - asynchronous_logging
+  - log_sampling
+  - cloudwatch_agent_buffering

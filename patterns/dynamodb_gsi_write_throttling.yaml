@@ -1,0 +1,13 @@
+pattern: dynamodb_gsi_write_throttling
+failure_class: throttling_cascade
+conditions:
+  - global_secondary_index
+  - gsi_provisioned_capacity_low
+  - main_table_write_success
+  - backpressure
+description: Throttling on a Global Secondary Index (GSI) causes writes to the main table to fail, creating a hidden bottleneck.
+mitigations:
+  - gsi_capacity_autoscaling
+  - on_demand_mode
+  - reduce_gsi_projection
+  - asynchronous_gsi_update

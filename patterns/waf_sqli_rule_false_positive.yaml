@@ -1,0 +1,13 @@
+pattern: waf_sqli_rule_false_positive
+failure_class: operational_disruption
+conditions:
+  - sql_injection_rule_set
+  - legitimate_traffic_blocked
+  - json_payload
+  - form_submission
+description: WAF SQL Injection rules incorrectly block legitimate user input containing SQL-like syntax (e.g., 'select' options).
+mitigations:
+  - rule_exclusion
+  - custom_allow_rule
+  - count_mode_testing
+  - payload_transformation

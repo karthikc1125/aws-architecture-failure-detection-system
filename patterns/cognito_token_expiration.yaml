@@ -1,0 +1,9 @@
+pattern: cognito_token_expiration
+failure_class: authentication_failure
+conditions:
+- short_ttl
+- refresh_token_missing
+description: Users logged out unexpectedly due to token expiry.
+mitigations:
+- token_validity_extension
+- refresh_token_flow

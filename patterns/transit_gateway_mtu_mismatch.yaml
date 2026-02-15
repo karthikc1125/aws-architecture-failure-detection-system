@@ -1,0 +1,13 @@
+pattern: transit_gateway_mtu_mismatch
+failure_class: network_packet_loss
+conditions:
+  - jumbo_frames_enabled_ec2
+  - cross_region_peering
+  - vpn_attachment
+  - incomplete_path_mtu_discovery
+description: Packets larger than 1500 bytes (or 1399 over VPN) are dropped silently by TGW, causing application blackholes.
+mitigations:
+  - mtu_standardization
+  - path_mtu_discovery
+  - mss_clamping
+  - jumbo_frame_check

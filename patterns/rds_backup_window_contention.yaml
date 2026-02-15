@@ -1,0 +1,9 @@
+pattern: rds_backup_window_contention
+failure_class: performance_degradation
+conditions:
+- snapshot_latency
+- heavy_write_load
+description: Database latency spikes during automated backup window.
+mitigations:
+- backup_window_tuning
+- read_replica_offload

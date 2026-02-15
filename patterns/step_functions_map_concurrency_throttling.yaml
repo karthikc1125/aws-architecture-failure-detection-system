@@ -1,0 +1,13 @@
+pattern: step_functions_map_concurrency_throttling
+failure_class: downstream_throttling
+conditions:
+  - map_state_iterator
+  - high_concurrency
+  - downstream_api_limit
+  - rate_limit_exceeded
+description: High concurrency in a Step Functions Map State overwhelms downstream services (e.g., Lambda, DynamoDB API).
+mitigations:
+  - max_concurrency_limit
+  - jitter_implementation
+  - sqs_buffer
+  - exponential_backoff

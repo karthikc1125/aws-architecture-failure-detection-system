@@ -1,0 +1,9 @@
+pattern: batch_docker_pull_rate_limit
+failure_class: deployment_failure
+conditions:
+- docker_hub_limit
+- public_image_pull
+description: Job fails due to Docker Hub rate limiting.
+mitigations:
+- ecr_pull_through_cache
+- authenticated_pull

@@ -1,0 +1,13 @@
+pattern: split_brain
+failure_class: data_corruption
+conditions:
+  - active_active_database
+  - custom_failover
+  - network_partition_risk
+  - lack_of_quorum
+description: A network partition causes two database nodes to both believe they are the primary, accepting conflicting writes.
+mitigations:
+  - quorum_consensus
+  - dynamo_db_global_tables
+  - odd_number_nodes
+  - fencing_token

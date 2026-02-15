@@ -1,0 +1,13 @@
+pattern: kinesis_provisioned_throughput
+failure_class: performance_degradation
+conditions:
+  - hot_shard
+  - data_skew
+  - insufficient_sharding
+  - read_write_contention
+description: Writes exceed 1MB/s or 1000 records/s per shard, causing ProvisionedThroughputExceededException and data loss.
+mitigations:
+  - enhanced_fan_out
+  - random_partition_key
+  - auto_scaling_kinesis
+  - sqs_buffer

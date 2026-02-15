@@ -1,0 +1,13 @@
+pattern: ec2_instance_store_data_loss
+failure_class: data_loss
+conditions:
+  - instance_store_volume
+  - stop_start_cycle
+  - hardware_failure
+  - ephemeral_data_persistence
+description: Data stored on EC2 Instance Store (ephemeral NVMe) is lost permanently when the instance is stopped or hardware fails.
+mitigations:
+  - ebs_root_volume
+  - s3_periodic_backup
+  - raid_0_replication
+  - application_level_replication

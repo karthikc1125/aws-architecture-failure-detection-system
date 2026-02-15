@@ -1,0 +1,14 @@
+pattern: ebs_burst_balance
+failure_class: resource_exhaustion
+conditions:
+  - sustained_iops
+  - small_volume_size
+  - large_database_loads
+  - batch_processing_jobs
+description: GP2/GP3 volumes deplete their I/O credit balance during sustained bursts, causing severe throttling and disk latency.
+mitigations:
+  - io2_provisioned_iops
+  - increase_volume_size
+  - instance_store
+  - read_replica_distribution
+  - sharding

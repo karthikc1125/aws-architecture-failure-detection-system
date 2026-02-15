@@ -1,0 +1,9 @@
+pattern: route53_resolver_rule_loop
+failure_class: network_loop
+conditions:
+- conditional_forwarding
+- circular_dependency
+description: DNS resolution loops between On-Prem and Cloud.
+mitigations:
+- resolver_rule_audit
+- dns_debug

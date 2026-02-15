@@ -1,0 +1,13 @@
+pattern: eventbridge_archive_retention_cost
+failure_class: cost_anomaly
+conditions:
+  - event_archiving_enabled
+  - infinite_retention
+  - high_event_volume
+  - storage_bill_shock
+description: Archiving all EventBridge events indefinitely leads to unexpected storage costs over time.
+mitigations:
+  - retention_period_policy
+  - selective_archiving
+  - event_filtering
+  - cost_allocation_tagging

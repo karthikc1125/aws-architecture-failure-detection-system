@@ -1,0 +1,13 @@
+pattern: zombie_ebs_snapshots
+failure_class: cost_wastage
+conditions:
+  - automated_snapshot_script
+  - missing_lifecycle_policy
+  - deleted_volume_source
+  - multi_terabyte_storage
+description: EBS snapshots remain indefinitely after volumes are deleted, silently accumulating massive S3 storage costs.
+mitigations:
+  - data_lifecycle_manager
+  - aws_backup_retention
+  - snapshot_age_tagging
+  - cost_allocation_tags

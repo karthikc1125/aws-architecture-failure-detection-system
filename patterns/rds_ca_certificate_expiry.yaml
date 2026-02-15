@@ -1,0 +1,13 @@
+pattern: rds_ca_certificate_expiry
+failure_class: connectivity_failure
+conditions:
+  - ssl_tls_enforced
+  - root_ca_update
+  - legacy_client_driver
+  - certificate_rotation
+description: Database connections fail because the client application does not trust the new RDS CA Certificate (e.g., rds-ca-2019).
+mitigations:
+  - acm_certificate_manager
+  - client_trust_store_update
+  - rotation_lifecycle_policy
+  - connection_test_suite

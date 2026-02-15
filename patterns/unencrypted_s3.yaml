@@ -1,0 +1,13 @@
+pattern: unencrypted_s3
+failure_class: compliance_violation
+conditions:
+  - s3_bucket_policy
+  - public_read
+  - no_encryption
+  - http_access
+description: Storage bucket allows unencrypted traffic or lacks server-side encryption at rest.
+mitigations:
+  - sse_kms
+  - bucket_policy_deny_http
+  - block_public_access
+  - macie

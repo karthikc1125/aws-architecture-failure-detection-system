@@ -1,0 +1,13 @@
+pattern: msk_partition_limit
+failure_class: scalability_limit
+conditions:
+  - high_topic_count
+  - broker_partition_limit
+  - leader_election_latency
+  - cluster_instability
+description: Creating too many partitions per MSK broker leads to long recovery times and instability during leader election.
+mitigations:
+  - partition_consolidation
+  - larger_broker_instance
+  - tiered_storage
+  - topic_compaction

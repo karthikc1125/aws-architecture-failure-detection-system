@@ -1,0 +1,10 @@
+pattern: s3_replication_latency
+failure_class: data_inconsistency
+conditions:
+- crr_bandwidth_limit
+- large_object_size
+- kms_key_mismatch
+description: Cross-Region Replication (CRR) lag exceeds RPO requirements.
+mitigations:
+- s3_rtc_metrics
+- direct_connect_optimization

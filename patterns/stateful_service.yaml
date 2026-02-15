@@ -1,0 +1,13 @@
+pattern: stateful_service
+failure_class: scalability_bottleneck
+conditions:
+  - local_file_storage
+  - session_on_disk
+  - sticky_sessions
+  - instance_affinity
+description: Application stores state locally on the compute instance, preventing horizontal scaling and causing data loss on replacement.
+mitigations:
+  - external_session_store
+  - elasticache_redis
+  - s3_for_files
+  - stateless_design

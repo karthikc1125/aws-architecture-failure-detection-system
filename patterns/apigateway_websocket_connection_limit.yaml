@@ -1,0 +1,13 @@
+pattern: apigateway_websocket_connection_limit
+failure_class: resource_exhaustion
+conditions:
+  - websocket_api
+  - concurrent_connections_spike
+  - unexpected_disconnection
+  - default_quota
+description: WebSocket API drops new connections upon reaching the default account-level concurrent connection limit (often 10k).
+mitigations:
+  - service_quota_increase
+  - connection_management_layer
+  - scale_out_architecture
+  - client_reconnection_jitter

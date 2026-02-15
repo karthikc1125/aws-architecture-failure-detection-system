@@ -1,0 +1,9 @@
+pattern: backup_vault_access_denied
+failure_class: compliance_failure
+conditions:
+- vault_policy
+- cross_account_copy
+description: Cannot copy recovery point.
+mitigations:
+- vault_access_policy
+- kms_grant

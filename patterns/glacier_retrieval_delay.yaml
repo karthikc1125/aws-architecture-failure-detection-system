@@ -1,0 +1,9 @@
+pattern: glacier_retrieval_delay
+failure_class: data_access_delay
+conditions:
+- standard_retrieval
+- expedited_unavailable
+description: Restore job takes longer than expected.
+mitigations:
+- expedited_tier
+- provisioned_capacity

@@ -1,0 +1,9 @@
+pattern: hot_partition
+failure_class: resource_exhaustion
+conditions:
+  - high_concurrent_writes
+  - sequential_keys
+mitigations:
+  - write_sharding
+  - random_suffix_keys
+  - adaptive_capacity

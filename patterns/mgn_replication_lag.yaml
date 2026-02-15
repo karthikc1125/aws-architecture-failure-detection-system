@@ -1,0 +1,9 @@
+pattern: mgn_replication_lag
+failure_class: migration_delay
+conditions:
+- bandwidth_limit
+- disk_io
+description: Server replication stuck.
+mitigations:
+- subnet_bandwidth
+- ebs_optimization

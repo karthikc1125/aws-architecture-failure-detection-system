@@ -1,0 +1,9 @@
+pattern: fargate_storage_limit
+failure_class: resource_exhaustion
+conditions:
+- ephemeral_storage
+- log_file_accumulation
+description: Task fails resulting in 'No space left on device'.
+mitigations:
+- mount_efs
+- log_driver_configuration

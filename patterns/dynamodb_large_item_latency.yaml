@@ -1,0 +1,13 @@
+pattern: dynamodb_large_item_latency
+failure_class: latency_spike
+conditions:
+  - item_size_near_400kb
+  - scan_operation
+  - large_attribute_retrieval
+  - network_bandwidth_constraint
+description: Reading items close to the 400KB limit consumes excessive Read Capacity Units (RCUs) and increases network latency.
+mitigations:
+  - s3_offload_large_attributes
+  - compression_client_side
+  - projection_expression_usage
+  - vertical_sharding

@@ -1,0 +1,9 @@
+pattern: sagemaker_notebook_kernel_crash
+failure_class: ai_development
+conditions:
+- oom_kill
+- library_conflict
+description: Jupyter kernel restarts.
+mitigations:
+- instance_resize
+- lifecycle_config

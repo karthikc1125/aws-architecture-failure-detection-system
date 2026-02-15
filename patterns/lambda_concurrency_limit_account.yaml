@@ -1,0 +1,10 @@
+pattern: lambda_concurrency_limit_account
+failure_class: throttling
+conditions:
+- account_level_limit
+- burst_traffic
+description: Functions throttled due to hitting account-wide concurrency limit (default
+  1000).
+mitigations:
+- service_quota_increase
+- provisioned_concurrency

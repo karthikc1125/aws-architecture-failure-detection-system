@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "failure-driven-aws-architect"
+version = "0.1.0"
+description = "Production-grade, future-proof, explainable project structure for Failure-Driven AWS Solution Architect"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "*"
+uvicorn = "*"
+sentence-transformers = "*"
+faiss-cpu = "*"
+pydantic = "*"
+python-dotenv = "*"
+requests = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

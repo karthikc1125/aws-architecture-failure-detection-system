@@ -1,0 +1,13 @@
+pattern: thundering_herd
+failure_class: performance_collapse
+conditions:
+  - shared_cache
+  - high_concurrency
+  - cache_expiry
+  - synchronous_regeneration
+description: Simultaneous expiration of a popular cache key causes all clients to hit the database at once, overwhelming it.
+mitigations:
+  - request_coalescing
+  - cache_jitter
+  - probablistic_early_expiration
+  - mutex_lock

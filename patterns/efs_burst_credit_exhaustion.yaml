@@ -1,0 +1,10 @@
+pattern: efs_burst_credit_exhaustion
+failure_class: performance_degradation
+conditions:
+- general_purpose_mode
+- burst_throughput_depletion
+description: Throughput drops to baseline (50 KiB/s per GiB) after exhausting burst
+  credits.
+mitigations:
+- provisioned_throughput
+- efs_lifecycle_management

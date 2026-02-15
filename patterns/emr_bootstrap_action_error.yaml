@@ -1,0 +1,9 @@
+pattern: emr_bootstrap_action_error
+failure_class: provisioning_failure
+conditions:
+- s3_script_missing
+- permission_denied
+description: Cluster fails to launch.
+mitigations:
+- s3_path_check
+- log_uri_check

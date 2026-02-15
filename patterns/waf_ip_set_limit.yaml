@@ -1,0 +1,9 @@
+pattern: waf_ip_set_limit
+failure_class: configuration_limit
+conditions:
+- too_many_ips
+- quota_exceeded
+description: Cannot add more IPs to WAF blocklist.
+mitigations:
+- managed_rule_group
+- ip_set_sharding

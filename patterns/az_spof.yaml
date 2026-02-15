@@ -1,0 +1,13 @@
+pattern: az_spof
+failure_class: availability_risk
+conditions:
+  - single_az
+  - single_instance
+  - ec2_without_asg
+  - rds_single_az
+description: Deployment resides in a single Availability Zone. An AZ outage takes down the entire application.
+mitigations:
+  - multi_az_deployment
+  - auto_scaling_group
+  - rds_multi_az
+  - load_balancer
