@@ -1,0 +1,10 @@
+fastapi==0.129.0
+uvicorn[standard]==0.40.0
+sentence-transformers==5.2.2
+faiss-cpu==1.13.2
+pydantic==2.12.5
+pydantic-settings==2.5.0
+python-dotenv==1.0.1
+requests==2.33.0
+pyyaml==6.0.2
+gradio==4.0.0
