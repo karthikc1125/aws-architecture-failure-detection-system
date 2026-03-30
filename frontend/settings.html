@@ -20,17 +20,6 @@
                 <li><a href="/analyze">Analyze</a></li>
                 <li><a href="/methodology">Methodology</a></li>
                 <li><a href="/settings" class="active">⚙️ Settings</a></li>
-                <li class="info-dropdown">
-                    <span class="info-icon">ℹ️</span>
-                    <div class="info-content">
-                        <a href="mailto:contact@safecloud.ai" class="info-link">
-                            📧 Email
-                        </a>
-                        <a href="https://github.com/safecloud/aws-failure-detector" target="_blank" class="info-link">
-                            🐱 GitHub
-                        </a>
-                    </div>
-                </li>
             </ul>
         </nav>
     </header>
@@ -247,6 +236,20 @@
                 window.location.reload();
             }
         }
+
+        function toggleInfoDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.querySelector('.info-dropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.info-dropdown');
+            if (!dropdown.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
     </script>
 </body>
 
