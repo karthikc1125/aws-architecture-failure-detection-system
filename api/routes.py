@@ -4,7 +4,7 @@ API routes for architecture analysis
 import logging
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
 from api.exceptions import InvalidInputError, AnalysisTimeoutError
 
 logger = logging.getLogger(__name__)
@@ -83,3 +83,91 @@ async def validate_architecture(input: UserInput):
         "message": "Architecture description format is valid",
         "length": len(input.description)
     }
+
+@router.post("/analyze/deployed", status_code=status.HTTP_200_OK)
+async def analyze_deployed_system(input: UserInput):
+    """
+    Analyze an ALREADY DEPLOYED AWS architecture.
+    
+    Identifies:
+    - Current issues and failures
+    - Performance bottlenecks
+    - Cost optimization opportunities
+    - Security vulnerabilities
+    - Operational risks
+    
+    Use this when analyzing existing production systems.
+    
+    - **description**: Describe your current AWS architecture (minimum 10 characters)
+    - **provider**: LLM provider (default: openrouter)
+    - **model_id**: Model identifier (default: google/gemini-2.0-flash-exp:free)
+    
+    Returns current issues, optimization suggestions, and risk assessment.
+    """
+    try:
+        if not input.description or len(input.description.strip()) < 10:
+            raise InvalidInputError("Architecture description must be at least 10 characters long")
+        
+        logger.info(f"Analyzing deployed system: {input.description[:50]}...")
+        
+        from agents.deployed_architecture_agent import DeployedArchitectureAgent
+        
+        analyzer = DeployedArchitectureAgent()
+        result = analyzer.run(input.description, input.provider, input.model_id)
+        
+        logger.info("Deployed system analysis completed successfully")
+        return result
+        
+    except InvalidInputError as e:
+        logger.warning(f"Invalid input: {e.detail}")
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(f"Deployed system analysis error: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Deployed system analysis failed. Please try again later."
+        )
+
+@router.post("/analyze/fresh", status_code=status.HTTP_200_OK)
+async def design_fresh_deployment(input: UserInput):
+    """
+    Design a FRESH AWS architecture from scratch.
+    
+    Provides recommendations for:
+    - Best practices architecture
+    - Scalability and performance optimization
+    - Cost-efficient design
+    - High availability setup
+    - Compliance considerations
+    
+    Use this when designing new projects or greenfield deployments.
+    
+    - **description**: Describe your project requirements (minimum 10 characters)
+    - **provider**: LLM provider (default: openrouter)
+    - **model_id**: Model identifier (default: google/gemini-2.0-flash-exp:free)
+    
+    Returns recommended architecture, implementation phases, and cost estimates.
+    """
+    try:
+        if not input.description or len(input.description.strip()) < 10:
+            raise InvalidInputError("Project requirements must be at least 10 characters long")
+        
+        logger.info(f"Designing fresh deployment for: {input.description[:50]}...")
+        
+        from agents.fresh_deployment_advisor_agent import FreshDeploymentAgent
+        
+        designer = FreshDeploymentAgent()
+        result = designer.run(input.description)
+        
+        logger.info("Fresh deployment design completed successfully")
+        return result
+        
+    except InvalidInputError as e:
+        logger.warning(f"Invalid input: {e.detail}")
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(f"Fresh deployment design error: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Fresh deployment design failed. Please try again later."
+        )

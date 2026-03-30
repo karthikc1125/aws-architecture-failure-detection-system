@@ -180,24 +180,65 @@
     </div>
 
     <main>
-        <div class="card" style="border-top: 4px solid var(--accent-blue);">
-            <div class="input-group">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Architecture
-                    Description</label>
-                <textarea id="userInput"
-                    placeholder="e.g. I have a user upload service using API Gateway triggering a Lambda function which processes images synchronously and saves metadata to a single DynamoDB partition..."></textarea>
-            </div>
-            <div style="text-align: right;">
-                <button onclick="analyze()" class="btn">🚀 Run Failure Analysis</button>
+        <!-- Tab Selection -->
+        <div class="card" style="border-bottom: 2px solid #334155; background: #0f172a; margin-bottom: 1rem;">
+            <div style="display: flex; gap: 1rem; border-bottom: 1px solid #1e293b; padding-bottom: 0.5rem;">
+                <button class="tab-btn" id="tab-deployed" onclick="switchTab('deployed')" style="border-bottom: 3px solid #3b82f6; color: #3b82f6; font-weight: 600; padding: 0.75rem 1.5rem; background: transparent; border: none; cursor: pointer; font-size: 1rem;">
+                    📊 Analyze Deployed System
+                </button>
+                <button class="tab-btn" id="tab-fresh" onclick="switchTab('fresh')" style="border-bottom: 3px solid transparent; color: #64748b; font-weight: 600; padding: 0.75rem 1.5rem; background: transparent; border: none; cursor: pointer; font-size: 1rem;">
+                    🏗️ Design Fresh Deployment
+                </button>
             </div>
         </div>
 
-        <section id="results" style="min-height: 200px;">
-            <!-- Results will be injected here via app.js -->
-            <div style="text-align: center; color: #334155; margin-top: 4rem;">
-                Waiting for input...
+        <!-- Deployed System Analysis Tab -->
+        <div id="deployed-tab" class="tab-content">
+            <div class="card" style="border-top: 4px solid var(--accent-blue);">
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin-top: 0; color: #e2e8f0;">📊 Analyze Existing Deployment</h3>
+                    <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1rem;">Describe your currently deployed AWS architecture to identify issues, bottlenecks, and optimization opportunities.</p>
+                </div>
+                <div class="input-group">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Current Architecture Description</label>
+                    <textarea id="deployedInput"
+                        placeholder="e.g., We have 3 EC2 instances behind ALB with RDS master-slave, API Gateway with Lambda for triggers, S3 for static files, but experiencing timeouts during peak hours and no multi-AZ setup..."></textarea>
+                </div>
+                <div style="text-align: right;">
+                    <button onclick="analyzeDeployed()" class="btn">📊 Analyze Current System</button>
+                </div>
             </div>
-        </section>
+
+            <section id="deployed-results" style="min-height: 200px;">
+                <div style="text-align: center; color: #334155; margin-top: 4rem;">
+                    Waiting for deployed system analysis...
+                </div>
+            </section>
+        </div>
+
+        <!-- Fresh Deployment Design Tab -->
+        <div id="fresh-tab" class="tab-content" style="display: none;">
+            <div class="card" style="border-top: 4px solid var(--accent-green);">
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin-top: 0; color: #e2e8f0;">🏗️ Design Fresh Deployment</h3>
+                    <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1rem;">Describe your project requirements and get a best-practices AWS architecture recommendation for greenfield deployment.</p>
+                </div>
+                <div class="input-group">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Project Requirements</label>
+                    <textarea id="freshInput"
+                        placeholder="e.g., Building a real-time collaboration platform with WebSockets, need to support 1M concurrent users, store user data and documents, requires GDPR compliance, expect 50M requests/day..."></textarea>
+                </div>
+                <div style="text-align: right;">
+                    <button onclick="analyzeFresh()" class="btn" style="background: #10b981;">🏗️ Design Architecture</button>
+                </div>
+            </div>
+
+            <section id="fresh-results" style="min-height: 200px;">
+                <div style="text-align: center; color: #334155; margin-top: 4rem;">
+                    Waiting for fresh deployment design...
+                </div>
+            </section>
+        </div>
     </main>
 
     <footer>
@@ -210,6 +251,266 @@
 
     <script src="/static/app.js"></script>
     <script>
+        // Tab Switching
+        function switchTab(tab) {
+            // Hide all tabs
+            document.getElementById('deployed-tab').style.display = 'none';
+            document.getElementById('fresh-tab').style.display = 'none';
+            
+            // Reset tab buttons
+            document.getElementById('tab-deployed').style.borderBottom = '3px solid transparent';
+            document.getElementById('tab-deployed').style.color = '#64748b';
+            document.getElementById('tab-fresh').style.borderBottom = '3px solid transparent';
+            document.getElementById('tab-fresh').style.color = '#64748b';
+            
+            // Show selected tab
+            if (tab === 'deployed') {
+                document.getElementById('deployed-tab').style.display = 'block';
+                document.getElementById('tab-deployed').style.borderBottom = '3px solid #3b82f6';
+                document.getElementById('tab-deployed').style.color = '#3b82f6';
+            } else if (tab === 'fresh') {
+                document.getElementById('fresh-tab').style.display = 'block';
+                document.getElementById('tab-fresh').style.borderBottom = '3px solid #10b981';
+                document.getElementById('tab-fresh').style.color = '#10b981';
+            }
+        }
+
+        // Analyze Deployed System
+        async function analyzeDeployed() {
+            const description = document.getElementById('deployedInput').value.trim();
+            
+            if (!description || description.length < 10) {
+                alert('Please describe your current architecture (minimum 10 characters)');
+                return;
+            }
+            
+            const resultsDiv = document.getElementById('deployed-results');
+            resultsDiv.innerHTML = '<div style="text-align: center; color: #64748b;"><p>🔄 Analyzing deployed system...</p></div>';
+            
+            try {
+                const provider = localStorage.getItem('safecloud_provider') || 'openrouter';
+                const modelId = localStorage.getItem('safecloud_model') || 'google/gemini-2.0-flash-exp:free';
+                const apiKey = localStorage.getItem('safecloud_api_key') || '';
+                
+                const response = await fetch('/api/analyze/deployed', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        description: description,
+                        provider: provider,
+                        model_id: modelId
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                displayDeployedAnalysis(result);
+            } catch (error) {
+                console.error('Error:', error);
+                resultsDiv.innerHTML = `<div style="color: #ef4444; padding: 1rem;">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        // Display Deployed System Analysis
+        function displayDeployedAnalysis(data) {
+            const resultsDiv = document.getElementById('deployed-results');
+            let html = '';
+            
+            // Health Score Card
+            const healthScore = data.health_score || 50;
+            html += `
+                <div class="card" style="border-top: 4px solid ${healthScore > 70 ? '#10b981' : healthScore > 50 ? '#f59e0b' : '#ef4444'}; margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">System Health Score</h3>
+                        <div style="font-size: 2rem; font-weight: bold; color: ${healthScore > 70 ? '#10b981' : healthScore > 50 ? '#f59e0b' : '#ef4444'};">${healthScore}/100</div>
+                    </div>
+                </div>
+            `;
+            
+            // Current Issues
+            if (data.current_issues && data.current_issues.length > 0) {
+                html += '<div class="card" style="border-top: 4px solid #ef4444; margin-bottom: 1rem;">';
+                html += '<h3 style="margin-top: 0; color: #fca5a5;">⚠️ Current Issues (' + data.current_issues.length + ')</h3>';
+                data.current_issues.forEach(issue => {
+                    html += `
+                        <div style="background: #7f1d1d; padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #ef4444;">
+                            <div style="font-weight: 600; color: #fca5a5;">${issue.pattern}</div>
+                            <div style="color: #fcbdbd; font-size: 0.95rem; margin-top: 0.5rem;">${issue.description}</div>
+                            <div style="margin-top: 0.5rem; color: #fda29b;">
+                                <span style="display: inline-block; background: rgba(239, 68, 68, 0.2); padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">
+                                    Severity: ${issue.severity}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
+            // Risk Assessment
+            if (data.risk_assessment && data.risk_assessment.length > 0) {
+                html += '<div class="card" style="border-top: 4px solid #f59e0b; margin-bottom: 1rem;">';
+                html += '<h3 style="margin-top: 0; color: #fbbf24;">🚨 Risk Assessment (' + data.risk_assessment.length + ')</h3>';
+                data.risk_assessment.forEach(risk => {
+                    html += `
+                        <div style="background: #78350f; padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                            <div style="font-weight: 600; color: #fbbf24;">${risk.type}</div>
+                            <div style="color: #fcd34d; font-size: 0.95rem; margin-top: 0.5rem;">${risk.description}</div>
+                            <div style="margin-top: 0.5rem; color: #fcd34d; font-size: 0.9rem;">
+                                <div>Impact: ${risk.impact}</div>
+                                <div>Urgency: <strong>${risk.urgency}</strong></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
+            // Optimization Opportunities
+            if (data.optimization_opportunities && data.optimization_opportunities.length > 0) {
+                html += '<div class="card" style="border-top: 4px solid #10b981;">';
+                html += '<h3 style="margin-top: 0; color: #86efac;">💡 Optimization Opportunities (' + data.optimization_opportunities.length + ')</h3>';
+                data.optimization_opportunities.forEach(opt => {
+                    html += `
+                        <div style="background: #064e3b; padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #10b981;">
+                            <div style="font-weight: 600; color: #86efac;">${opt.opportunity}</div>
+                            <div style="color: #bbf7d0; font-size: 0.95rem; margin-top: 0.5rem;">${opt.description}</div>
+                            <div style="margin-top: 0.5rem; color: #6ee7b7;">
+                                <div>Estimated Improvement: ${opt.estimated_improvement}</div>
+                                <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #a7f3d0;">💻 ${opt.implementation}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
+            resultsDiv.innerHTML = html;
+        }
+
+        // Analyze Fresh Deployment
+        async function analyzeFresh() {
+            const description = document.getElementById('freshInput').value.trim();
+            
+            if (!description || description.length < 10) {
+                alert('Please describe your project requirements (minimum 10 characters)');
+                return;
+            }
+            
+            const resultsDiv = document.getElementById('fresh-results');
+            resultsDiv.innerHTML = '<div style="text-align: center; color: #64748b;"><p>🔄 Designing architecture...</p></div>';
+            
+            try {
+                const provider = localStorage.getItem('safecloud_provider') || 'openrouter';
+                const modelId = localStorage.getItem('safecloud_model') || 'google/gemini-2.0-flash-exp:free';
+                
+                const response = await fetch('/api/analyze/fresh', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        description: description,
+                        provider: provider,
+                        model_id: modelId
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                displayFreshDesign(result);
+            } catch (error) {
+                console.error('Error:', error);
+                resultsDiv.innerHTML = `<div style="color: #ef4444; padding: 1rem;">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        // Display Fresh Deployment Design
+        function displayFreshDesign(data) {
+            const resultsDiv = document.getElementById('fresh-results');
+            let html = '';
+            
+            // Design Summary
+            html += `
+                <div class="card" style="border-top: 4px solid #10b981; margin-bottom: 1rem;">
+                    <h3 style="margin-top: 0; color: #86efac;">✅ Recommended Architecture</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: #064e3b; padding: 1rem; border-radius: 6px;">
+                            <div style="color: #94a3b8; font-size: 0.85rem;">Project Type</div>
+                            <div style="font-weight: 600; color: #86efac; font-size: 1.1rem; margin-top: 0.5rem;">${data.project_type}</div>
+                        </div>
+                        <div style="background: #064e3b; padding: 1rem; border-radius: 6px;">
+                            <div style="color: #94a3b8; font-size: 0.85rem;">Estimated Scale</div>
+                            <div style="font-weight: 600; color: #86efac; font-size: 1.1rem; margin-top: 0.5rem;">${data.estimated_scale.users}</div>
+                        </div>
+                    </div>
+                    <div style="background: #0f172a; padding: 1rem; border-radius: 6px; border: 1px solid #10b981;">
+                        <div style="color: #94a3b8; font-size: 0.85rem;">Design Rationale</div>
+                        <div style="color: #e2e8f0; margin-top: 0.5rem;">${data.design_rationale}</div>
+                    </div>
+                </div>
+            `;
+            
+            // Components
+            if (data.recommended_architecture && data.recommended_architecture.length > 0) {
+                html += '<div class="card" style="border-top: 4px solid #3b82f6; margin-bottom: 1rem;">';
+                html += '<h3 style="margin-top: 0; color: #93c5fd;">🏗️ Recommended Components</h3>';
+                html += '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">';
+                data.recommended_architecture.forEach(component => {
+                    html += `
+                        <div style="background: #0f172a; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #3b82f6; color: #93c5fd;">
+                            ✓ ${component}
+                        </div>
+                    `;
+                });
+                html += '</div></div>';
+            }
+            
+            // Implementation Phases
+            if (data.implementation_phase && data.implementation_phase.length > 0) {
+                html += '<div class="card" style="border-top: 4px solid #f59e0b; margin-bottom: 1rem;">';
+                html += '<h3 style="margin-top: 0; color: #fbbf24;">📋 Implementation Phases</h3>';
+                data.implementation_phase.forEach((phase, idx) => {
+                    html += `
+                        <div style="background: #78350f; padding: 0.75rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #f59e0b; color: #fcd34d;">
+                            ${idx + 1}. ${phase}
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
+            // Compliance Requirements
+            if (data.compliance_requirements && data.compliance_requirements.length > 0) {
+                html += '<div class="card" style="border-top: 4px solid #8b5cf6;">';
+                html += '<h3 style="margin-top: 0; color: #c4b5fd;">🔐 Compliance Requirements</h3>';
+                data.compliance_requirements.forEach(comp => {
+                    html += `<div style="background: #4c1d95; padding: 0.75rem; margin-bottom: 0.5rem; border-radius: 6px; color: #e9d5ff;">📌 ${comp}</div>`;
+                });
+                html += '</div>';
+            }
+            
+            // Cost Estimate
+            html += `
+                <div class="card" style="border-top: 4px solid #34d399;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; color: #a7f3d0;">💰 Estimated Monthly Cost</h3>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #10b981;">${data.estimated_cost}</div>
+                    </div>
+                </div>
+            `;
+            
+            resultsDiv.innerHTML = html;
+        }
+
         // Inline Modal Logic for Global Navbar
         function openAIModal() {
             document.getElementById('aiModal').style.display = 'flex';
