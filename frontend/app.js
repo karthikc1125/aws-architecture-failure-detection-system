@@ -17,7 +17,7 @@ async function analyze() {
     `;
 
     try {
-        const response = await fetch("/analyze", {
+        const response = await fetch("/api/analyze/deployed", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ description: text })
@@ -28,59 +28,64 @@ async function analyze() {
         // --- Render Results ---
         let html = `<div class="result-section">`;
 
-        // 1. Top Metrics
-        html += `
-            <div class="metric-grid">
-                <div class="metric-card">
-                    <div class="metric-value" style="color: ${data.review_score >= 7 ? 'var(--accent-green)' : 'var(--accent-red)'}">
-                        ${data.review_score}/10
+        // 1. Display Analysis Type
+        html += `<div style="margin-bottom: 1.5rem; padding: 1rem; background: #1e293b; border-left: 4px solid var(--accent-blue); border-radius: 4px;">
+            <div style="color: #94a3b8; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">Analysis Type</div>
+            <div style="color: #e2e8f0; font-size: 1.1rem; margin-top: 0.5rem;">${data.analysis_type || 'Architecture Analysis'}</div>
+        </div>`;
+
+        // 2. Status & Summary
+        html += `<div style="margin-bottom: 1.5rem;">
+            <h2 style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                📊 Analysis Status
+                <span style="font-size: 0.9rem; background: ${data.status === 'optimized' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; color: ${data.status === 'optimized' ? '#22c55e' : '#ef4444'}; border: 1px solid ${data.status === 'optimized' ? 'rgba(34, 197, 94, 0.4)' : 'rgba(239, 68, 68, 0.4)'}; padding: 4px 12px; border-radius: 99px; text-transform: capitalize;">
+                    ${data.status}
+                </span>
+            </h2>
+        </div>`;
+
+        // 3. Key Metrics
+        if (data.issues && data.issues.length > 0) {
+            html += `
+                <div class="metric-grid" style="margin-bottom: 2rem;">
+                    <div class="metric-card">
+                        <div class="metric-value" style="color: var(--accent-red);">${data.issues.length}</div>
+                        <div class="metric-label">Issues Found</div>
                     </div>
-                    <div class="metric-label">Resilience Score</div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="color: var(--accent-orange);">${data.quick_wins ? data.quick_wins.length : 0}</div>
+                        <div class="metric-label">Quick Wins</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="color: var(--accent-green);">${data.total_potential_savings || '20-40%'}</div>
+                        <div class="metric-label">Potential Savings</div>
+                    </div>
                 </div>
-                <div class="metric-card">
-                    <div class="metric-value">${data.detected_failures.length}</div>
-                    <div class="metric-label">Risks Detected</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">${data.proposed_architecture.components.length}</div>
-                    <div class="metric-label">New Components</div>
-                </div>
-            </div>
-        `;
+            `;
+        }
 
-        // 2. Failure Analysis
-        html += `<h2 style="display: flex; align-items: center; gap: 1rem;">
-            ⚠️ Failure Prediction Report
-            <span style="font-size: 0.9rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 4px 12px; border-radius: 99px;">
-                ${data.detected_failures.length} Possible Scenarios
-            </span>
-        </h2>`;
-
-        if (data.detected_failures.length === 0) {
-            html += `<div class="card" style="border-left: 4px solid var(--accent-green);">✅ No obvious failure patterns detected based on current description.</div>`;
-        } else {
-            data.detected_failures.forEach(f => {
+        // 4. Issues Section
+        if (data.issues && data.issues.length > 0) {
+            html += `<h2 style="display: flex; align-items: center; gap: 1rem;">
+                ⚠️ Issues Identified
+                <span style="font-size: 0.9rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 4px 12px; border-radius: 99px;">
+                    ${data.issues.length} Issues
+                </span>
+            </h2>`;
+            data.issues.forEach((issue, idx) => {
+                const severity = issue.severity || 'Medium';
+                const severityColor = severity === 'Critical' ? '#ef4444' : severity === 'High' ? '#f59e0b' : '#3b82f6';
                 html += `
                     <div class="failure-item">
                         <div class="failure-title">
-                            <span>${f.name}</span>
-                            <div style="display: flex; gap: 0.5rem; align-items: center;">
-                                <span style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">${f.failure_class}</span>
-                                <span style="font-size: 0.75rem; color: ${f.likelihood >= 80 ? '#ef4444' : '#f59e0b'}; font-weight: 700; background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px;">
-                                    ${(f.likelihood || 50)}% PROBABILITY
-                                </span>
-                            </div>
+                            <span>${issue.issue || issue}</span>
+                            <span style="font-size: 0.75rem; color: ${severityColor}; font-weight: 700; background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px;">
+                                ${severity}
+                            </span>
                         </div>
-                        
-                        <!-- Likelihood Bar -->
-                        <div style="width: 100%; height: 4px; background: #1e293b; border-radius: 2px; margin: 0.4rem 0 0.8rem 0; overflow: hidden;">
-                             <div style="width: ${(f.likelihood || 50)}%; height: 100%; background: linear-gradient(90deg, ${f.likelihood >= 80 ? '#ef4444' : '#f59e0b'}, ${f.likelihood >= 80 ? '#b91c1c' : '#d97706'}); box-shadow: 0 0 8px ${f.likelihood >= 80 ? '#ef4444' : '#f59e0b'};"></div>
-                        </div>
-
-                        <div style="color: #e2e8f0; font-size: 0.95rem; line-height: 1.5;">${f.description}</div>
-                        ${f.mitigation ? `
+                        ${issue.recommendation ? `
                             <div class="failure-mitigation">
-                                <span>🛠️ Recommendation:</span> ${f.mitigation}
+                                <span>💡 Recommendation:</span> ${issue.recommendation}
                             </div>
                         ` : ''}
                     </div>
@@ -88,20 +93,58 @@ async function analyze() {
             });
         }
 
-        // 3. Proposed Architecture
-        html += `<h2 style="margin-top: 3rem;">🏗️ Proposed Resilient Architecture</h2>`;
-        html += `<div class="card" style="border-color: var(--accent-blue);">`;
+        // 5. Quick Wins Section
+        if (data.quick_wins && data.quick_wins.length > 0) {
+            html += `<h2 style="margin-top: 2rem; display: flex; align-items: center; gap: 1rem;">
+                ⚡ Quick Wins
+                <span style="font-size: 0.9rem; background: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.4); padding: 4px 12px; border-radius: 99px;">
+                    ${data.quick_wins.length} Actions
+                </span>
+            </h2>`;
+            data.quick_wins.forEach((win, idx) => {
+                html += `
+                    <div class="card" style="border-left: 4px solid var(--accent-green); margin-bottom: 1rem;">
+                        <div style="font-weight: 600; color: #22c55e; margin-bottom: 0.5rem;">✅ ${win.opportunity || win}</div>
+                        <div style="color: #cbd5e1; font-size: 0.95rem;">${win.savings ? `Potential Savings: ${win.savings}` : ''}</div>
+                    </div>
+                `;
+            });
+        }
 
-        // Components Badges
-        html += `<div style="margin-bottom: 1.5rem;">`;
-        data.proposed_architecture.components.forEach(c => {
-            html += `<span class="arch-component">📦 ${c.name}</span>`;
-        });
-        html += `</div>`;
+        // 6. Implementation Details
+        if (data.implementation_effort) {
+            html += `<div class="card" style="border-color: var(--accent-blue); margin-top: 2rem;">
+                <h3>📋 Implementation Details</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                    <div>
+                        <div style="color: #94a3b8; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">Effort Required</div>
+                        <div style="color: #e2e8f0; font-size: 1rem; margin-top: 0.5rem;">${data.implementation_effort}</div>
+                    </div>
+                    <div>
+                        <div style="color: #94a3b8; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">Est. Savings</div>
+                        <div style="color: #22c55e; font-size: 1rem; margin-top: 0.5rem;">${data.total_potential_savings || 'Variable'}</div>
+                    </div>
+                </div>
+            </div>`;
+        }
 
-        // Description
-        html += `<div style="background: #0f172a; padding: 1.5rem; border-radius: 8px; white-space: pre-wrap; font-family: var(--font-family); color: #cbd5e1;">${data.proposed_architecture.description}</div>`;
-        html += `</div>`;
+        // 7. Recommendations Section
+        if (data.recommendations && data.recommendations.length > 0) {
+            html += `<h2 style="margin-top: 2rem; display: flex; align-items: center; gap: 1rem;">
+                🛠️ Recommendations
+                <span style="font-size: 0.9rem; background: rgba(59, 130, 246, 0.2); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.4); padding: 4px 12px; border-radius: 99px;">
+                    ${data.recommendations.length} Suggestions
+                </span>
+            </h2>`;
+            data.recommendations.forEach((rec, idx) => {
+                html += `
+                    <div class="card" style="border-left: 4px solid #3b82f6; margin-bottom: 1rem;">
+                        <div style="font-weight: 600; color: #3b82f6; margin-bottom: 0.5rem;">${idx + 1}. ${rec.recommendation || rec}</div>
+                        <div style="color: #cbd5e1; font-size: 0.95rem;">${rec.priority ? `Priority: ${rec.priority}` : ''}</div>
+                    </div>
+                `;
+            });
+        }
 
         html += `</div>`; // End result-section
 

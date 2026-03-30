@@ -319,36 +319,95 @@
         // Display Deployed System Analysis
         function displayDeployedAnalysis(data) {
             const resultsDiv = document.getElementById('deployed-results');
-            let html = '';
+            let html = '<div style="padding: 1rem;">';
             
-            // Health Score Card
-            const healthScore = data.health_score || 50;
+            // Analysis Status
+            const statusColor = data.status === 'optimized' ? '#10b981' : '#f59e0b';
             html += `
-                <div class="card" style="border-top: 4px solid ${healthScore > 70 ? '#10b981' : healthScore > 50 ? '#f59e0b' : '#ef4444'}; margin-bottom: 1rem;">
+                <div class="card" style="border-top: 4px solid ${statusColor}; margin-bottom: 1rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <h3 style="margin: 0;">System Health Score</h3>
-                        <div style="font-size: 2rem; font-weight: bold; color: ${healthScore > 70 ? '#10b981' : healthScore > 50 ? '#f59e0b' : '#ef4444'};">${healthScore}/100</div>
+                        <div>
+                            <h3 style="margin: 0 0 0.5rem 0;">Analysis Status</h3>
+                            <div style="color: #cbd5e1; font-size: 0.95rem;">${data.analysis_type || 'Deployed System Analysis'}</div>
+                        </div>
+                        <div style="font-size: 1.2rem; font-weight: bold; color: ${statusColor}; text-transform: capitalize;">${data.status || 'analyzed'}</div>
                     </div>
                 </div>
             `;
             
+            // Key Metrics
+            if (data.issues || data.quick_wins || data.total_potential_savings) {
+                html += `
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="card" style="text-align: center; border-top: 4px solid #ef4444;">
+                            <div style="font-size: 1.8rem; font-weight: bold; color: #ef4444;">${(data.issues || []).length}</div>
+                            <div style="color: #94a3b8; margin-top: 0.5rem;">Issues Found</div>
+                        </div>
+                        <div class="card" style="text-align: center; border-top: 4px solid #f59e0b;">
+                            <div style="font-size: 1.8rem; font-weight: bold; color: #f59e0b;">${(data.quick_wins || []).length}</div>
+                            <div style="color: #94a3b8; margin-top: 0.5rem;">Quick Wins</div>
+                        </div>
+                        <div class="card" style="text-align: center; border-top: 4px solid #10b981;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #10b981;">${data.total_potential_savings || '20-40%'}</div>
+                            <div style="color: #94a3b8; margin-top: 0.5rem;">Potential Savings</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
             // Current Issues
-            if (data.current_issues && data.current_issues.length > 0) {
+            if (data.issues && data.issues.length > 0) {
                 html += '<div class="card" style="border-top: 4px solid #ef4444; margin-bottom: 1rem;">';
-                html += '<h3 style="margin-top: 0; color: #fca5a5;">⚠️ Current Issues (' + data.current_issues.length + ')</h3>';
-                data.current_issues.forEach(issue => {
+                html += '<h3 style="margin-top: 0; color: #fca5a5;">⚠️ Current Issues (' + data.issues.length + ')</h3>';
+                data.issues.forEach(issue => {
+                    const severity = issue.severity || 'Medium';
+                    const severityColor = severity === 'Critical' ? '#ef4444' : severity === 'High' ? '#f59e0b' : '#3b82f6';
                     html += `
-                        <div style="background: #7f1d1d; padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #ef4444;">
-                            <div style="font-weight: 600; color: #fca5a5;">${issue.pattern}</div>
-                            <div style="color: #fcbdbd; font-size: 0.95rem; margin-top: 0.5rem;">${issue.description}</div>
-                            <div style="margin-top: 0.5rem; color: #fda29b;">
-                                <span style="display: inline-block; background: rgba(239, 68, 68, 0.2); padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">
-                                    Severity: ${issue.severity}
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid ${severityColor};">
+                            <div style="font-weight: 600; color: #fca5a5;">${issue.issue || issue}</div>
+                            <div style="margin-top: 0.5rem; color: #cbd5e1;">
+                                <span style="display: inline-block; background: ${severityColor}; background: rgba(0,0,0,0.2); padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem; color: ${severityColor};">
+                                    ${severity}
                                 </span>
                             </div>
+                            ${issue.recommendation ? `<div style="margin-top: 0.5rem; color: #cbd5e1; font-size: 0.95rem;">💡 ${issue.recommendation}</div>` : ''}
                         </div>
                     `;
                 });
+                html += '</div>';
+            }
+            
+            // Quick Wins
+            if (data.quick_wins && data.quick_wins.length > 0) {
+                html += '<div class="card" style="border-top: 4px solid #10b981; margin-bottom: 1rem;">';
+                html += '<h3 style="margin-top: 0; color: #86efac;">⚡ Quick Wins (' + data.quick_wins.length + ')</h3>';
+                data.quick_wins.forEach(win => {
+                    html += `
+                        <div style="background: rgba(34, 197, 94, 0.1); padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #22c55e;">
+                            <div style="font-weight: 600; color: #86efac;">✅ ${win.opportunity || win}</div>
+                            ${win.savings ? `<div style="color: #cbd5e1; font-size: 0.95rem; margin-top: 0.5rem;">💰 Potential Savings: ${win.savings}</div>` : ''}
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
+            // Implementation Details
+            if (data.implementation_effort) {
+                html += '<div class="card" style="border-top: 4px solid #3b82f6;">';
+                html += '<h3 style="margin-top: 0; color: #60a5fa;">📋 Implementation Details</h3>';
+                html += `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <div style="color: #94a3b8; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">Effort Required</div>
+                            <div style="color: #e2e8f0; font-size: 1rem; margin-top: 0.5rem;">${data.implementation_effort}</div>
+                        </div>
+                        <div>
+                            <div style="color: #94a3b8; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">Est. Savings</div>
+                            <div style="color: #22c55e; font-size: 1rem; margin-top: 0.5rem;">${data.total_potential_savings || 'Variable'}</div>
+                        </div>
+                    </div>
+                `;
                 html += '</div>';
             }
             
@@ -358,7 +417,7 @@
                 html += '<h3 style="margin-top: 0; color: #fbbf24;">🚨 Risk Assessment (' + data.risk_assessment.length + ')</h3>';
                 data.risk_assessment.forEach(risk => {
                     html += `
-                        <div style="background: #78350f; padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                        <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #f59e0b;">
                             <div style="font-weight: 600; color: #fbbf24;">${risk.type}</div>
                             <div style="color: #fcd34d; font-size: 0.95rem; margin-top: 0.5rem;">${risk.description}</div>
                             <div style="margin-top: 0.5rem; color: #fcd34d; font-size: 0.9rem;">
@@ -371,14 +430,29 @@
                 html += '</div>';
             }
             
+            // Recommendations
+            if (data.recommendations && data.recommendations.length > 0) {
+                html += '<div class="card" style="border-top: 4px solid #3b82f6;">';
+                html += '<h3 style="margin-top: 0; color: #60a5fa;">🛠️ Recommendations (' + data.recommendations.length + ')</h3>';
+                data.recommendations.forEach((rec, idx) => {
+                    html += `
+                        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #3b82f6;">
+                            <div style="font-weight: 600; color: #60a5fa;">${idx + 1}. ${rec.recommendation || rec}</div>
+                            ${rec.priority ? `<div style="color: #cbd5e1; font-size: 0.95rem; margin-top: 0.5rem;">Priority: ${rec.priority}</div>` : ''}
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
             // Optimization Opportunities
             if (data.optimization_opportunities && data.optimization_opportunities.length > 0) {
                 html += '<div class="card" style="border-top: 4px solid #10b981;">';
                 html += '<h3 style="margin-top: 0; color: #86efac;">💡 Optimization Opportunities (' + data.optimization_opportunities.length + ')</h3>';
                 data.optimization_opportunities.forEach(opt => {
                     html += `
-                        <div style="background: #064e3b; padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #10b981;">
-                            <div style="font-weight: 600; color: #86efac;">${opt.opportunity}</div>
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #10b981;">
+                            <div style="font-weight: 600; color: #86efac;">✨ ${opt.opportunity}</div>
                             <div style="color: #bbf7d0; font-size: 0.95rem; margin-top: 0.5rem;">${opt.description}</div>
                             <div style="margin-top: 0.5rem; color: #6ee7b7;">
                                 <div>Estimated Improvement: ${opt.estimated_improvement}</div>
@@ -389,6 +463,9 @@
                 });
                 html += '</div>';
             }
+            
+            html += '</div>';
+            resultsDiv.innerHTML = html;
             
             resultsDiv.innerHTML = html;
         }

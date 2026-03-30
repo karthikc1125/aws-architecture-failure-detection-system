@@ -13,6 +13,7 @@ from typing import Optional, Dict, List, Set
 from datetime import datetime, timedelta
 from fastapi import Request, HTTPException, status
 from functools import wraps
+from dataclasses import dataclass
 from enum import Enum
 
 logger = logging.getLogger(__name__)

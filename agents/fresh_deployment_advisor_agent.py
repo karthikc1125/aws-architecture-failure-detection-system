@@ -4,6 +4,7 @@ Focus: Design best practices, scalability, resilience from day 1
 """
 from typing import List, Dict
 from agents.base_agent import BaseAgent
+from agents.deep_analysis_engine import DeepAnalysisEngine
 from schemas.architecture_schema import Architecture, ArchitectureComponent
 
 class FreshDeploymentAgent(BaseAgent):
@@ -19,11 +20,12 @@ class FreshDeploymentAgent(BaseAgent):
             "Security by default",
             "Observability from start"
         ]
+        self.deep_analyzer = DeepAnalysisEngine()
 
     def run(self, description: str, provider: str = "openrouter", model_id: str = None) -> dict:
         """
-        Design architecture for fresh deployment
-        Returns: {recommended_architecture, components, scalability_path, estimated_cost, timeline}
+        Design architecture for fresh deployment with DEEP insights
+        Returns: {recommended_architecture, components, scalability_path, estimated_cost, timeline, risk_analysis}
         """
         print(f"[{self.name}] 🆕 Designing FRESH deployment architecture...")
         print(f"[{self.name}] Principles: {', '.join(self.design_principles)}")
@@ -31,48 +33,104 @@ class FreshDeploymentAgent(BaseAgent):
         self.provider = provider
         self.model_id = model_id
         
-        # Build design prompt
-        design_prompt = f"""
-You are an AWS solution architect designing a NEW system from scratch.
-
-Requirements:
-{description}
-
-Design an architecture that follows these principles:
-1. **Resilience** - Handle failures gracefully
-2. **Scalability** - Grow 100x without redesign
-3. **Cost-efficient** - Lean infrastructure
-4. **Secure** - Security best practices built-in
-5. **Observable** - Monitoring/logging from day 1
-6. **Maintainable** - Easy for team to manage
-
-For the design provide:
-- Main components (compute, storage, database, messaging)
-- Why each component was chosen
-- Scaling strategy
-- Cost estimate
-- Deployment order
-- Timeline
-
-Format as structured JSON with architecture array, estimated_monthly_cost, timeline_weeks.
-"""
+        # Get base design
+        base_design = self._fallback_fresh_design(description)
+        # Add advanced insights
+        enhanced_design = self._enhance_design_with_deep_insights(description, base_design)
         
-        # Call LLM
-        llm_response = self._call_llm(
-            system_prompt=self.prompt_template,
-            user_input=design_prompt
-        )
-        
-        if not llm_response:
-            # Fallback design
-            return self._fallback_fresh_design(description)
-        
-        return {
-            "status": "designed",
-            "design_type": "fresh_deployment",
-            "architecture": llm_response,
-            "principles": self.design_principles
+        return enhanced_design
+    
+    def _enhance_design_with_deep_insights(self, description: str, base_design: dict) -> dict:
+        """Enhance design with advanced risk analysis and insights"""
+        # Add complexity assessment
+        complexity_keywords = {
+            "multi_region": ["multi-region", "global", "edge"],
+            "real_time": ["real-time", "streaming", "live", "websocket"],
+            "high_scale": ["million users", "million transactions", "petabyte"],
+            "compliance": ["hipaa", "pci", "gdpr", "sox"]
         }
+        
+        complexity_score = 0
+        special_requirements = []
+        for req, keywords in complexity_keywords.items():
+            if any(kw in description.lower() for kw in keywords):
+                complexity_score += 1
+                special_requirements.append(req)
+        
+        # Risk mitigation strategies
+        risk_mitigations = {
+            "multi_region": {
+                "risk": "Regional outages",
+                "mitigation": "Deploy to multiple regions with Route53 failover",
+                "cost_delta": "+40-60% but 99.99% availability"
+            },
+            "real_time": {
+                "risk": "Message loss and latency",
+                "mitigation": "Use SQS/SNS/Kinesis with DLQ and monitoring",
+                "cost_delta": "+20-30%"
+            },
+            "high_scale": {
+                "risk": "Database bottlenecks",
+                "mitigation": "Implement read replicas, caching layer, and sharding",
+                "cost_delta": "+50-100%"
+            },
+            "compliance": {
+                "risk": "Regulatory non-compliance",
+                "mitigation": "Encryption, audit logging, data residency controls",
+                "cost_delta": "+15-25%"
+            }
+        }
+        
+        # Generate risk analysis
+        risk_analysis = []
+        for req in special_requirements:
+            if req in risk_mitigations:
+                risk_analysis.append(risk_mitigations[req])
+        
+        # Add to base design
+        enhanced = {
+            **base_design,
+            "design_complexity": complexity_score,
+            "special_requirements": special_requirements,
+            "risk_mitigations": risk_analysis,
+            "disaster_recovery": {
+                "rpo": "1 hour" if complexity_score > 1 else "4 hours",  # Recovery Point Objective
+                "rto": "15 minutes" if complexity_score > 1 else "1 hour",  # Recovery Time Objective
+                "strategy": "Cross-region replication with automated failover"
+            },
+            "security_best_practices": [
+                "✓ Enable VPC Flow Logs for network visibility",
+                "✓ Use AWS Secrets Manager for credentials",
+                "✓ Enable encryption in transit (TLS) and at rest",
+                "✓ Implement API rate limiting and WAF rules",
+                "✓ Set up CloudTrail for audit logging",
+                "✓ Use least-privilege IAM roles"
+            ],
+            "monitoring_strategy": {
+                "metrics": ["CPU", "Memory", "Database connections", "API latency", "Error rates"],
+                "logs": "CloudWatch Logs with metric filters",
+                "traces": "X-Ray for distributed tracing",
+                "alarms": ["High latency > 500ms", "Error rate > 1%", "Database CPU > 80%"]
+            },
+            "estimated_monthly_cost_with_dr": self._calculate_dr_cost(base_design, risk_analysis)
+        }
+        
+        return enhanced
+    
+    def _calculate_dr_cost(self, base_design: dict, risk_mitigations: list) -> str:
+        """Calculate cost with disaster recovery"""
+        # Extract base cost
+        base_cost_str = base_design.get("estimated_monthly_cost", "$0").replace("$", "").replace(",", "")
+        try:
+            base_cost = float(base_cost_str)
+        except:
+            base_cost = 0
+        
+        # Add DR costs
+        dr_overhead = base_cost * 0.3 if risk_mitigations else 0
+        total = base_cost + dr_overhead
+        
+        return f"${int(total):,} (includes {int(dr_overhead)} DR overhead)"
     
     def _fallback_fresh_design(self, description: str) -> dict:
         """Fallback architecture design for fresh deployment"""
