@@ -1,4 +1,15 @@
-# Failure-Driven AWS Solution Architect
+---
+title: AWS Architecture Failure Detection
+emoji: 🏗️
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_file: app_hf.py
+pinned: false
+license: mit
+---
+
+# 🏗️ Failure-Driven AWS Solution Architect
 
 > **A Production-Grade, Research-Oriented AI System for Resilient Cloud Architecture.**
 
