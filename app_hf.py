@@ -15,7 +15,7 @@ import threading
 def start_fastapi():
     """Start FastAPI server in background"""
     subprocess.Popen(
-        ["python", "-m", "uvicorn", "api.main:app", "--host", "127.0.0.1", "--port", "7860"],
+        ["python", "-m", "uvicorn", "api.main:app", "--host", "127.0.0.1", "--port", "8000"],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL
     )
@@ -44,28 +44,19 @@ def analyze_architecture(description: str, provider: str = "openrouter", model_i
         }
         
         response = requests.post(
-            "http://127.0.0.1:7860/api/analyze",
+            "http://127.0.0.1:8000/api/analyze",
             json=payload,
             timeout=120
         )
         
         if response.status_code == 200:
             result = response.json()
-            return {
-                "status": "✅ Analysis Complete",
-                "result": json.dumps(result, indent=2)
-            }
+            return "✅ Analysis Complete", json.dumps(result, indent=2)
         else:
-            return {
-                "status": "❌ Error",
-                "result": f"Error {response.status_code}: {response.text}"
-            }
+            return "❌ Error", f"Error {response.status_code}: {response.text}"
             
     except Exception as e:
-        return {
-            "status": "❌ Error",
-            "result": f"Connection error: {str(e)}\n\nMake sure the description is at least 10 characters long."
-        }
+        return "❌ Error", f"Connection error: {str(e)}\n\nMake sure the description is at least 10 characters long."
 
 # Build Gradio interface
 with gr.Blocks(title="AWS Architecture Failure Detection", theme=gr.themes.Soft()) as demo:
