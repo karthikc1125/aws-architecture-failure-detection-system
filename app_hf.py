@@ -134,7 +134,7 @@ with gr.Blocks(title="AWS Architecture Failure Detection", theme=gr.themes.Soft(
         inputs=[architecture_desc, provider, model_id],
         outputs=[status_output, result_output],
         fn=analyze_architecture,
-        run_on_load=False
+        run_on_click=False
     )
     
     gr.Markdown("""
