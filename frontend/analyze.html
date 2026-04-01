@@ -520,57 +520,55 @@
                 <div class="card" style="border-top: 4px solid #10b981; margin-bottom: 1rem;">
                     <h3 style="margin-top: 0; color: #86efac;">✅ Recommended Architecture</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                        <div style="background: #064e3b; padding: 1rem; border-radius: 6px;">
+                        <div style="background: #0f172a; padding: 1rem; border-radius: 6px;">
                             <div style="color: #94a3b8; font-size: 0.85rem;">Project Type</div>
-                            <div style="font-weight: 600; color: #86efac; font-size: 1.1rem; margin-top: 0.5rem;">${data.project_type}</div>
+                            <div style="font-weight: 600; color: #86efac; font-size: 1.1rem; margin-top: 0.5rem;">${data.design_type || 'Fresh Deployment'}</div>
                         </div>
-                        <div style="background: #064e3b; padding: 1rem; border-radius: 6px;">
-                            <div style="color: #94a3b8; font-size: 0.85rem;">Estimated Scale</div>
-                            <div style="font-weight: 600; color: #86efac; font-size: 1.1rem; margin-top: 0.5rem;">${data.estimated_scale.users}</div>
+                        <div style="background: #0f172a; padding: 1rem; border-radius: 6px;">
+                            <div style="color: #94a3b8; font-size: 0.85rem;">Timeline</div>
+                            <div style="font-weight: 600; color: #86efac; font-size: 1.1rem; margin-top: 0.5rem;">${data.implementation_timeline || 'N/A'}</div>
                         </div>
-                    </div>
-                    <div style="background: #0f172a; padding: 1rem; border-radius: 6px; border: 1px solid #10b981;">
-                        <div style="color: #94a3b8; font-size: 0.85rem;">Design Rationale</div>
-                        <div style="color: #e2e8f0; margin-top: 0.5rem;">${data.design_rationale}</div>
                     </div>
                 </div>
             `;
             
             // Components
-            if (data.recommended_architecture && data.recommended_architecture.length > 0) {
+            if (data.recommended_components && data.recommended_components.length > 0) {
                 html += '<div class="card" style="border-top: 4px solid #3b82f6; margin-bottom: 1rem;">';
                 html += '<h3 style="margin-top: 0; color: #93c5fd;">🏗️ Recommended Components</h3>';
                 html += '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">';
-                data.recommended_architecture.forEach(component => {
+                data.recommended_components.forEach(component => {
                     html += `
-                        <div style="background: #0f172a; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #3b82f6; color: #93c5fd;">
-                            ✓ ${component}
+                        <div style="background: #0f172a; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #3b82f6;">
+                            <strong style="color: #93c5fd;">✓ ${component.name}</strong> (${component.type})
+                            <div style="color: #94a3b8; font-size: 0.9rem; margin-top: 0.25rem;">${component.reason}</div>
+                            <div style="color: #6ee7b7; font-size: 0.85rem; margin-top: 0.25rem;">Est. Cost: ${component.cost}</div>
                         </div>
                     `;
                 });
                 html += '</div></div>';
             }
             
-            // Implementation Phases
-            if (data.implementation_phase && data.implementation_phase.length > 0) {
+            // Implementation Phases (next_steps)
+            if (data.next_steps && data.next_steps.length > 0) {
                 html += '<div class="card" style="border-top: 4px solid #f59e0b; margin-bottom: 1rem;">';
                 html += '<h3 style="margin-top: 0; color: #fbbf24;">📋 Implementation Phases</h3>';
-                data.implementation_phase.forEach((phase, idx) => {
+                data.next_steps.forEach((step, idx) => {
                     html += `
-                        <div style="background: #78350f; padding: 0.75rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #f59e0b; color: #fcd34d;">
-                            ${idx + 1}. ${phase}
+                        <div style="background: rgba(245, 158, 11, 0.1); padding: 0.75rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid #f59e0b; color: #fcd34d;">
+                            ${step}
                         </div>
                     `;
                 });
                 html += '</div>';
             }
             
-            // Compliance Requirements
-            if (data.compliance_requirements && data.compliance_requirements.length > 0) {
-                html += '<div class="card" style="border-top: 4px solid #8b5cf6;">';
-                html += '<h3 style="margin-top: 0; color: #c4b5fd;">🔐 Compliance Requirements</h3>';
-                data.compliance_requirements.forEach(comp => {
-                    html += `<div style="background: #4c1d95; padding: 0.75rem; margin-bottom: 0.5rem; border-radius: 6px; color: #e9d5ff;">📌 ${comp}</div>`;
+            // Security Best Practices
+            if (data.security_best_practices && data.security_best_practices.length > 0) {
+                html += '<div class="card" style="border-top: 4px solid #8b5cf6; margin-bottom: 1rem;">';
+                html += '<h3 style="margin-top: 0; color: #c4b5fd;">🔐 Security Best Practices</h3>';
+                data.security_best_practices.forEach(practice => {
+                    html += `<div style="background: rgba(139, 92, 246, 0.1); padding: 0.75rem; margin-bottom: 0.5rem; border-radius: 6px; color: #e9d5ff; border-left: 3px solid #8b5cf6;">📌 ${practice}</div>`;
                 });
                 html += '</div>';
             }
@@ -580,7 +578,7 @@
                 <div class="card" style="border-top: 4px solid #34d399;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <h3 style="margin: 0; color: #a7f3d0;">💰 Estimated Monthly Cost</h3>
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #10b981;">${data.estimated_cost}</div>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #10b981;">${data.estimated_monthly_cost_with_dr || data.estimated_monthly_cost}</div>
                     </div>
                 </div>
             `;
@@ -702,7 +700,7 @@
         // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             const dropdown = document.querySelector('.info-dropdown');
-            if (!dropdown.contains(event.target)) {
+            if (dropdown && !dropdown.contains(event.target)) {
                 dropdown.classList.remove('active');
             }
         });
