@@ -1,2 +1,23 @@
+nohup: ignoring input
 INFO:     Will watch for changes in these directories: ['/home/karthik/Documents/Projects/hobbie project/aws-architecture-failure-detection-system']
-ERROR:    [Errno 98] Address already in use
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [16599] using StatReload
+INFO:     Started server process [16601]
+INFO:     Waiting for application startup.
+2026-04-02 20:07:08,000 - api.main - INFO - 🚀 Starting Failure-Driven AWS Architect v1.0
+2026-04-02 20:07:08,000 - api.main - INFO - Environment: Environment.DEVELOPMENT
+INFO:     Application startup complete.
+2026-04-02 20:07:15,941 - api.middleware - INFO - [e6842075-357e-4626-baab-8e05db892c1a] GET /analyze - Client: 127.0.0.1
+2026-04-02 20:07:15,973 - api.middleware - INFO - [e6842075-357e-4626-baab-8e05db892c1a] GET /analyze - Status: 200 (0.032s)
+INFO:     127.0.0.1:39058 - "GET /analyze HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'app.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-04-02 20:07:56,531 - api.main - INFO - 🛑 Shutting down gracefully...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [16601]
+INFO:     Started server process [16679]
+INFO:     Waiting for application startup.
+2026-04-02 20:07:59,073 - api.main - INFO - 🚀 Starting Failure-Driven AWS Architect v1.0
+2026-04-02 20:07:59,074 - api.main - INFO - Environment: Environment.DEVELOPMENT
+INFO:     Application startup complete.

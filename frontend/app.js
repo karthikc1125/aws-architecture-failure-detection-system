@@ -161,6 +161,70 @@ async function analyze() {
     }
 }
 
+console.log("SafeCloud app.js loaded!");
+
+function importFile(event) {
+    console.log("importFile triggered!", event);
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const text = e.target.result;
+        
+        // Detect active tab (Analyze page)
+        const deployedTab = document.getElementById('deployed-tab');
+        const freshTab = document.getElementById('fresh-tab');
+        
+        if (deployedTab && deployedTab.style.display !== 'none') {
+            document.getElementById('deployedInput').value = text;
+            showToast('Imported content to Deployed System.', 'success');
+        } else if (freshTab && freshTab.style.display !== 'none') {
+            document.getElementById('freshInput').value = text;
+            showToast('Imported content to Fresh Design.', 'success');
+        } else {
+            // Fallback for index.html (Simple input)
+            const userInput = document.getElementById('userInput');
+            if (userInput) {
+                userInput.value = text;
+                showToast('Imported content to input area.', 'success');
+            }
+        }
+        
+        // Reset file input
+        event.target.value = '';
+    };
+    reader.onerror = function() {
+        showToast('Error reading file.', 'error');
+    };
+    reader.readAsText(file);
+}
+
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    let icon = 'ℹ️';
+    if (type === 'success') icon = '✅';
+    if (type === 'error') icon = '❌';
+    
+    toast.innerHTML = `
+        <span>${icon}</span>
+        <div style="flex: 1;">${message}</div>
+    `;
+
+    container.appendChild(toast);
+
+    // Auto-remove after 4 seconds
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+
 /* Settings Modal Logic */
 function openSettings() {
     document.getElementById('settingsModal').style.display = 'flex';

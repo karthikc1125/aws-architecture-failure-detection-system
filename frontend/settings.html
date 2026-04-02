@@ -240,13 +240,13 @@
         function toggleInfoDropdown(event) {
             event.stopPropagation();
             const dropdown = document.querySelector('.info-dropdown');
-            dropdown.classList.toggle('active');
+            if (dropdown) dropdown.classList.toggle('active');
         }
 
         // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             const dropdown = document.querySelector('.info-dropdown');
-            if (!dropdown.contains(event.target)) {
+            if (dropdown && !dropdown.contains(event.target)) {
                 dropdown.classList.remove('active');
             }
         });

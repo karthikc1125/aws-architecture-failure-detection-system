@@ -2,7 +2,9 @@
 API routes for architecture analysis
 """
 import logging
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, File, UploadFile
+import shutil
+import os
 from pydantic import BaseModel, Field
 from typing import Optional, List
 from api.exceptions import InvalidInputError, AnalysisTimeoutError
@@ -170,4 +172,46 @@ async def design_fresh_deployment(input: UserInput):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Fresh deployment design failed. Please try again later."
+        )
+
+@router.post("/rag/upload", status_code=status.HTTP_201_CREATED)
+async def upload_rag_file(file: UploadFile = File(...)):
+    """
+    Upload a file to be added to the RAG knowledge base.
+    Supported types: .json, .txt, .md, .yaml, .yml
+    """
+    allowed_extensions = {".json", ".txt", ".md", ".yaml", ".yml"}
+    file_ext = os.path.splitext(file.filename)[1].lower()
+    
+    if file_ext not in allowed_extensions:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported file type: {file_ext}. Supported: {', '.join(allowed_extensions)}"
+        )
+    
+    upload_dir = "data/rag_uploads"
+    os.makedirs(upload_dir, exist_ok=True)
+    
+    file_path = os.path.join(upload_dir, file.filename)
+    
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        logger.info(f"RAG file uploaded: {file_path}")
+        
+        # Trigger re-indexing (async might be better, but for small index it's fast)
+        from embeddings.build_index import build_index
+        build_index()
+        
+        return {
+            "message": f"File {file.filename} uploaded and RAG index updated successfully",
+            "filename": file.filename,
+            "path": file_path
+        }
+    except Exception as e:
+        logger.error(f"RAG upload error: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to process RAG file: {str(e)}"
         )

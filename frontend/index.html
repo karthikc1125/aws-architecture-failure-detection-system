@@ -7,6 +7,7 @@
     <title>SafeCloud | AWS Architecture Defense</title>
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script src="/static/app.js"></script>
 </head>
 
 <body>
@@ -52,7 +53,7 @@
                         <span style="margin-left: 0.5rem; font-weight: 500;">System</span>
                     </button>
                 </li>
-                <li>
+                 <li>
                     <a href="https://github.com/karthikc1125/aws-architecture-failure-detection-system" target="_blank" class="nav-icon-btn" title="View on GitHub">
                         <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -62,6 +63,7 @@
                         </svg>
                     </a>
                 </li>
+            </ul>
         </nav>
     </header>
 
@@ -243,58 +245,29 @@
         </div>
     </footer>
 
+    <!-- 🍞 Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
     <script src="/static/app.js"></script>
     <script>
         // Inline Modal Logic for Global Navbar
         function openAIModal() {
             document.getElementById('aiModal').style.display = 'flex';
-
-            // Load Saved Provider
             const savedP = localStorage.getItem('safecloud_online_provider') || 'openrouter';
             const selP = document.getElementById('modalProviderSelect');
-
-            if (['openrouter', 'openai'].includes(savedP)) selP.value = savedP;
-            else {
-                selP.value = 'other';
-                document.getElementById('modalCustomProvider').style.display = 'block';
-                document.getElementById('modalCustomProvider').value = savedP;
-            }
-
-            // Load Key
-            document.getElementById('modalApiKey').value = localStorage.getItem('safecloud_api_key') || '';
-
-            // Load Saved Model
-            const saved = localStorage.getItem('safecloud_model') || 'google/gemini-2.0-flash-exp:free';
-            const sel = document.getElementById('modalModelSelect');
-            let exists = false;
-            for (let opt of sel.options) if (opt.value === saved) exists = true;
-
-            if (exists) { sel.value = saved; }
-            else {
-                sel.value = 'other';
-                document.getElementById('modalCustomModel').style.display = 'block';
-                document.getElementById('modalCustomModel').value = saved;
-            }
+            if (selP) selP.value = savedP;
+            const savedM = localStorage.getItem('safecloud_model') || 'google/gemini-2.0-flash-exp:free';
+            const selM = document.getElementById('modalModelSelect');
+            if (selM) selM.value = savedM;
+            const savedK = localStorage.getItem('safecloud_api_key') || '';
+            const selK = document.getElementById('modalApiKey');
+            if (selK) selK.value = savedK;
         }
+
         function closeAIModal() { document.getElementById('aiModal').style.display = 'none'; }
-
-        function openSettingsModal() {
-            document.getElementById('settingsModal').style.display = 'flex';
-
-            // Determine Mode (Local vs Online)
-            // If the ACTIVE provider is simulation, we are in local mode.
-            const currentProvider = localStorage.getItem('safecloud_provider') || 'openrouter';
-            let isLocal = (currentProvider === 'simulation');
-
-            // Set Radio Buttons
-            document.querySelector(`input[name="execMode"][value="${isLocal ? 'local' : 'online'}"]`).checked = true;
-
-            toggleModeUI();
-        }
-
+        function openSettingsModal() { document.getElementById('settingsModal').style.display = 'flex'; }
         function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
 
-        // Sync Dropdowns
         function syncModelSelection() {
             const val = document.getElementById('modalModelSelect').value;
             document.getElementById('modalCustomModel').style.display = (val === 'other') ? 'block' : 'none';
@@ -307,46 +280,34 @@
         function toggleModeUI() {
             const mode = document.querySelector('input[name="execMode"]:checked').value;
             document.getElementById('offlineConfig').style.display = (mode === 'local') ? 'block' : 'none';
-            // No online config in settings anymore
         }
 
         function saveAISelection() {
-            // Save Provider
             let prov = document.getElementById('modalProviderSelect').value;
             if (prov === 'other') prov = document.getElementById('modalCustomProvider').value;
             localStorage.setItem('safecloud_online_provider', prov);
-
-            // Save Key
             const key = document.getElementById('modalApiKey').value;
             localStorage.setItem('safecloud_api_key', key);
-
-            // Save Model
             let val = document.getElementById('modalModelSelect').value;
             if (val === 'other') val = document.getElementById('modalCustomModel').value;
             if (!val) return alert("Enter a model ID");
             localStorage.setItem('safecloud_model', val);
-
-            // If we are currently in "Online" mode (not simulation), update the ACTIVE provider too
             const currentActive = localStorage.getItem('safecloud_provider');
             if (currentActive !== 'simulation') {
                 localStorage.setItem('safecloud_provider', prov);
             }
-
             closeAIModal();
             alert("Updated AI Configuration!");
         }
 
         function saveSystemSettings() {
             const mode = document.querySelector('input[name="execMode"]:checked').value;
-
             if (mode === 'local') {
                 localStorage.setItem('safecloud_provider', 'simulation');
             } else {
-                // If switching to online, restore the preferred online provider
                 const onlineProv = localStorage.getItem('safecloud_online_provider') || 'openrouter';
                 localStorage.setItem('safecloud_provider', onlineProv);
             }
-
             closeSettingsModal();
             alert("Updated System Mode: " + (mode === 'local' ? 'Offline Simulation' : 'Online API'));
         }
@@ -354,20 +315,19 @@
         function toggleInfoDropdown(event) {
             event.stopPropagation();
             const dropdown = document.querySelector('.info-dropdown');
-            console.log('Toggle Info Dropdown - Before:', dropdown.classList.contains('active'));
-            dropdown.classList.toggle('active');
-            console.log('Toggle Info Dropdown - After:', dropdown.classList.contains('active'));
+            if (dropdown) dropdown.classList.toggle('active');
         }
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             const dropdown = document.querySelector('.info-dropdown');
-            if (!dropdown.contains(event.target)) {
-                console.log('Closing dropdown from outside click');
+            if (dropdown && !dropdown.contains(event.target)) {
                 dropdown.classList.remove('active');
             }
         });
     </script>
+
+    <!-- 🍞 Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
 </body>
 
 </html>
